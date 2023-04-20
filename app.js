@@ -8,8 +8,8 @@ window.onresize = () => {
 
 
 
-var gridSpacing = 100;
-var gridRadius = 2;
+var gridSpacing = 50;
+var gridRadius = 1;
 
 class Card {
   constructor() {
@@ -123,7 +123,7 @@ function drawCircle() {
     for (y = 0; y < canvas.height; y += gridSpacing) {
       ctx.beginPath();
       ctx.fillStyle = "";
-      ctx.arc(x, y, gridRadius, 0, 100);
+      ctx.arc(x, y, gridRadius, 0, gridSpacing);
       ctx.fill();
       ctx.closePath();
     }
