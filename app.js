@@ -23,7 +23,7 @@ class Card {
     const titleInput = (this.titleInput = $(
       "<input id='card-title-input' placeholder='Enter Title Here' contenteditable='true'></input>"
     ));
-    const content = (this.content = $("<div id='card-content' title='Drag by holding mouse'></div>"));
+    const content = (this.content = $("<div id='card-content' title='Hold to drag'></div>"));
 
     /* Task Component */
     const taskContainer = (this.taskContainer = $(
@@ -37,15 +37,34 @@ class Card {
     const taskItem = $(`<ul id="task-item"></ul>`);
 
     /* Add the elements to the object */
-    container.appendTo("body");
+    container.appendTo($("#body-content"));
     head.appendTo(container);
     titleContainer.appendTo(head);
     titleInput.appendTo(titleContainer);
     content.appendTo(container);
     taskContainer.appendTo(content);
     taskInput.appendTo(content);
-content.on('mousedown',head.on('mousedown'), () => {
-container.draggable();
+content.on('mousedown', () => {
+container.draggable({
+  revert:true
+});
+
+container.droppable({
+  accept:$("#card-container"),
+  drop: function(ui){
+var droppedCard = ui.draggable;
+var droppedPosition = droppedCard.index;
+var targetPosition = $(this).index;
+
+if(droppedPosition < targetPosition){
+  droppedCard.insertBefore($(this));
+}
+
+else{
+  droppedCard.insertAfter($(this));
+}
+  } })
+
 })
     /* Assign title input value */
     titleInput.on("keypress", (e) => {
@@ -118,7 +137,7 @@ container.draggable();
 
 function CreateCard() {
   let card = new Card();
-  $(card.container).appendTo($("body"));
+  $(card.container).appendTo($("body-content"));
   $(card.container).css("transform", "scale(0)");
   setTimeout(() => {
     $(card.container).css("transform", "scale(1)", 500);

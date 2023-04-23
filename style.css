@@ -5,13 +5,20 @@
   padding: 0;
   font-family: "Poppins", sans-serif;
 }
-body {
-  margin: 0;
-  padding: 0;
+#body-content {
+  justify-content: center;
+  display: grid;
+  position: relative;
+  width: 100%;
+  height: 100vh;
+  grid-template-columns: repeat(3, 3fr);
+  grid-template-rows: auto 6fr;
 }
 
 #canvas {
-  position: absolute;
+  position: fixed;
+  height: 100%;
+  width: 100%;
   z-index: -1;
 }
 
@@ -58,20 +65,25 @@ body {
   top: 20%;
 }
 #createCardBtn {
-  margin: 10px 10px 10px 10px;
-  font-size: medium;
+  margin: 5px auto;
+  font-size: 0.75rem;
   width: 100px;
-  height: 60px;
+  height: 40px;
   background-color: dodgerblue;
   color: white;
   border: none;
-  border-radius: 0.5rem;
+  border-radius: 0.25rem;
   cursor: pointer;
   transition: 0.3s ease;
+  position: absolute;
+  z-index: 100;
+  left: 2%;
+  border: 2px cyan solid;
 }
 
 #createCardBtn:hover {
   background-color: cyan;
+  color: black;
 }
 #card-input {
   display: flex;
@@ -92,20 +104,13 @@ input {
 .navbar-top {
   padding: 0;
   margin: 0;
-
   text-align: center;
   width: 100%;
   height: 50px;
-  background-color: whitesmoke;
+  background-color: rgb(215, 235, 245);
   box-shadow: 0px 10px 15px rgb(160, 160, 160);
+  color: rgb(92, 115, 137);
 }
-
-#task-item ul {
-  z-index: 1000;
-  list-style: none;
-  padding: 5px;
-}
-
 
 #card-task-container {
   display: grid;
@@ -116,10 +121,15 @@ input {
   text-align: center;
   transition: transform 0.3s ease;
 }
-#card-task-container:hover{
-  scale:110%;
-  size:110%;
+#card-task-container:hover {
+  scale: 110%;
+  size: 110%;
 }
-#task-item{
-cursor: pointer;
+#task-item {
+  cursor: pointer;
+  transition: 0.3s ease;
+}
+#task-item:hover {
+  color: dodgerblue;
+  text-shadow: 2px 2px 5px rgb(255, 255, 255);
 }

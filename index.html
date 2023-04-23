@@ -11,17 +11,17 @@
   </head>
   <body>
     <div class="navbar-top">
-      <h1 id="navbar-title">Task A Card - To do app</h1>
+      <button onclick="CreateCard()" id="createCardBtn">Create a card</button>
+      <h1 id="navbar-title">Task A Card</h1>
     </div>
     <canvas id="canvas"></canvas>
-
-    <button onclick="CreateCard()" id="createCardBtn">Create a card</button>
+    <div class="body-content" id="body-content"></div>
+    
     <script src="app.js"></script>
   </body>
 
   <script>
     window.onload = CreateCard();
     window.onload = drawCircle();
-    
   </script>
 </html>
