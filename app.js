@@ -6,8 +6,6 @@ window.onresize = () => {
   }, 100);
 };
 
-
-
 var gridSpacing = 50;
 var gridRadius = 1;
 
@@ -20,11 +18,12 @@ class Card {
     const titleContainer = (this.titlecontainer = $(
       '<div id="card-title-container"></div'
     ));
+    
     const title = (this.title = $(`<h2 id='card-title' maxlength='14'>`));
     const titleInput = (this.titleInput = $(
       "<input id='card-title-input' placeholder='Enter Title Here' contenteditable='true'></input>"
     ));
-    const content = (this.content = $("<div id='card-content'></div>"));
+    const content = (this.content = $("<div id='card-content' title='Drag by holding mouse'></div>"));
 
     /* Task Component */
     const taskContainer = (this.taskContainer = $(
@@ -33,9 +32,9 @@ class Card {
     const taskInput = (this.input = $(
       "<input id='card-input' placeholder='Enter Task'></input>"
     ));
-    const taskRemove = (this.taskRemove = $(
-      "<button id='remove-task'>-</button>"
-    ));
+
+    
+    const taskItem = $(`<ul id="task-item"></ul>`);
 
     /* Add the elements to the object */
     container.appendTo("body");
@@ -45,7 +44,9 @@ class Card {
     content.appendTo(container);
     taskContainer.appendTo(content);
     taskInput.appendTo(content);
-
+content.on('mousedown',head.on('mousedown'), () => {
+container.draggable();
+})
     /* Assign title input value */
     titleInput.on("keypress", (e) => {
       if (e.key === "Enter") {
@@ -70,15 +71,14 @@ class Card {
     taskInput.on("keypress", (e) => {
       if (e.key === "Enter") {
         if (this.input.val() != "") {
-          tasks++;
-          this.taskItem = $(
-            `<ul><li id="task-item">${taskInput.val()}</li></ul>`
-          ).appendTo(this.taskContainer);
-          
+          taskContainer.appendTo(content);
+          taskItem.clone().text(this.input.val()).appendTo(taskContainer);
+
           taskInput.blur();
           taskInput.val("");
+          tasks++;
         }
-     
+
         if (tasks >= maxTasks) {
           this.input.blur();
           this.input.hide();
@@ -86,6 +86,23 @@ class Card {
         }
       }
     });
+
+    taskContainer.on("click", "#task-item", () => {
+     var taskItem = $(this);
+     var taskItemInput = $("<input id='task-item-input'>").attr("type", "text")
+      taskItem.hide();
+      taskItemInput.insertAfter(taskItem);
+      taskItemInput.show(); 
+      taskItemInput.focus();
+
+      taskItemInput.on("keydown", (e) => {
+        if (e.key === "Enter" && taskItemInput.val() != "") {
+ 
+        }
+        else return;
+      });
+    });
+
 
 
     /* Toggle head input and edit button visibility */
@@ -100,7 +117,6 @@ class Card {
 }
 
 function CreateCard() {
-  
   let card = new Card();
   $(card.container).appendTo($("body"));
   $(card.container).css("transform", "scale(0)");
@@ -108,7 +124,6 @@ function CreateCard() {
     $(card.container).css("transform", "scale(1)", 500);
   });
 }
-
 
 function drawCircle() {
   const canvas = document.querySelector("canvas");
@@ -129,4 +144,3 @@ function drawCircle() {
     }
   }
 }
-
