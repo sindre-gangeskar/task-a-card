@@ -6,7 +6,7 @@ window.onresize = () => {
   }, 100);
 };
 
-var gridSpacing = 50;
+var gridSpacing = 25;
 var gridRadius = 1;
 
 class Card {
@@ -18,12 +18,14 @@ class Card {
     const titleContainer = (this.titlecontainer = $(
       '<div id="card-title-container"></div'
     ));
-    
+
     const title = (this.title = $(`<h2 id='card-title' maxlength='14'>`));
     const titleInput = (this.titleInput = $(
       "<input id='card-title-input' placeholder='Enter Title Here' contenteditable='true'></input>"
     ));
-    const content = (this.content = $("<div id='card-content' title='Hold to drag'></div>"));
+    const content = (this.content = $(
+      "<div id='card-content' title='Hold to drag'></div>"
+    ));
 
     /* Task Component */
     const taskContainer = (this.taskContainer = $(
@@ -33,8 +35,7 @@ class Card {
       "<input id='card-input' placeholder='Enter Task'></input>"
     ));
 
-    
-    const taskItem = $(`<ul id="task-item"></ul>`);
+    const taskItem = (this.taskItem = $(`<ul id="task-item"></ul>`));
 
     /* Add the elements to the object */
     container.appendTo($("#body-content"));
@@ -44,28 +45,22 @@ class Card {
     content.appendTo(container);
     taskContainer.appendTo(content);
     taskInput.appendTo(content);
-content.on('mousedown', () => {
-container.draggable({
-  revert:true
-});
 
-container.droppable({
-  accept:$("#card-container"),
-  drop: function(ui){
-var droppedCard = ui.draggable;
-var droppedPosition = droppedCard.index;
-var targetPosition = $(this).index;
+    /* Make card draggable */
+    container.on("mousedown", () => {
+      container.draggable({
+        revert: true,
+        start: function () {
+          $(this).css("z-index", 9999);
+        },
+        stop: function () {
+          $(this).css("z-index", "");
+        },
+      });
 
-if(droppedPosition < targetPosition){
-  droppedCard.insertBefore($(this));
-}
+      /* Make card swappable with other cards based on positioning */
+    });
 
-else{
-  droppedCard.insertAfter($(this));
-}
-  } })
-
-})
     /* Assign title input value */
     titleInput.on("keypress", (e) => {
       if (e.key === "Enter") {
@@ -90,8 +85,10 @@ else{
     taskInput.on("keypress", (e) => {
       if (e.key === "Enter") {
         if (this.input.val() != "") {
-          taskContainer.appendTo(content);
-          taskItem.clone().text(this.input.val()).appendTo(taskContainer);
+
+          /* taskContainer.clone().appendTo(content); */
+          taskItem.clone().text(this.input.val()).appendTo(taskContainer.clone().appendTo(content))
+         /*  taskItem.clone().text(this.input.val()).appendTo(taskContainer); */
 
           taskInput.blur();
           taskInput.val("");
@@ -106,29 +103,29 @@ else{
       }
     });
 
-    taskContainer.on("click", "#task-item", () => {
-     var taskItem = $(this);
-     var taskItemInput = $("<input id='task-item-input'>").attr("type", "text")
-      taskItem.hide();
-      taskItemInput.insertAfter(taskItem);
-      taskItemInput.show(); 
-      taskItemInput.focus();
-
-      taskItemInput.on("keydown", (e) => {
-        if (e.key === "Enter" && taskItemInput.val() != "") {
- 
-        }
-        else return;
-      });
-    });
-
-
-
     /* Toggle head input and edit button visibility */
     title.on("click", () => {
       titleInput.show();
       titleInput.focus();
       title.hide();
+    });
+
+    /* Edit task item by clicking */
+    container.on("click", "#task-item", () => {
+      var itemInput = $(
+        "<input id='task-item-input' placeholder='Edit task here'></input>"
+      );
+      console.log("CLICKED");
+      if (!$(taskContainer).find("#task-item-input").length) {
+        taskContainer.append(itemInput);
+      } else return;
+
+      itemInput.on("keypress", (e) => {
+        if (e.key === "Enter" && itemInput.val() != "") {
+          console.log("Input registered: " + itemInput.val());
+         $(this).text(itemInput.val());
+        }
+      });
     });
 
     container.css("scale: 1");
@@ -137,7 +134,6 @@ else{
 
 function CreateCard() {
   let card = new Card();
-  $(card.container).appendTo($("body-content"));
   $(card.container).css("transform", "scale(0)");
   setTimeout(() => {
     $(card.container).css("transform", "scale(1)", 500);
