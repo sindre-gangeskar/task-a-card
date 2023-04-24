@@ -12,7 +12,7 @@ var gridRadius = 1;
 class Card {
   constructor() {
     const container = (this.container = $("<div id='card-container'></div>"));
-    const head = (this.head = $("<div id='card-head'></div>"));
+    const head = (this.head = $("<div id='card-head''></div>"));
 
     /* Title Component */
     const titleContainer = (this.titlecontainer = $(

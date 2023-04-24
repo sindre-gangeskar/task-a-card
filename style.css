@@ -34,10 +34,9 @@
   box-shadow: 5px 10px 25px rgba(0, 0, 0, 0.311);
   text-transform: capitalize;
   transition: transform 0.5s ease-in-out;
-
 }
 
-#card-container:hover{
+#card-container:hover {
   outline: 4px solid rgb(169, 209, 255);
   outline-style: solid;
 }
@@ -61,42 +60,43 @@
   z-index: 1;
 }
 #card-content {
+
   display: flex;
+  flex-wrap: nowrap;
   flex-direction: column;
-  position: absolute;
-  justify-content: top;
+  position: relative;
   align-items: center;
-  margin: 2px auto;
   width: 100%;
   height: 60%;
   top: 20%;
-  bottom:20%;
+  bottom: 20%;
 }
-#card-content > #card-task-{
+#card-content > #card-task-container{
+flex:0.1 1 5%;
+position: relative;
+}
 
-  top:20%;
-  bottom:20%;
-}
 #createCardBtn {
   margin: 5px auto;
   font-size: 0.75rem;
   width: 100px;
   height: 40px;
-  background-color: dodgerblue;
+  background-color: rgb(169, 191, 236);
   color: white;
   border: none;
   border-radius: 0.25rem;
   cursor: pointer;
   transition: 0.3s ease;
   position: absolute;
-  z-index: 100;
+  z-index: 1;
   left: 2%;
-  border: 2px cyan solid;
 }
 
 #createCardBtn:hover {
-  background-color: cyan;
-  color: black;
+  background-color: rgb(170, 217, 255);
+  color: white;
+  outline: 2px solid;
+  outline-offset: 2px;
 }
 #card-input {
   display: flex;
@@ -105,8 +105,9 @@
   justify-content: center;
   width: 80%;
   position: absolute;
-  bottom: 10%;
+  bottom: -20%;
 }
+
 input {
   text-align: center;
   border-radius: 2em;
@@ -115,29 +116,26 @@ input {
 }
 
 .navbar-top {
-  padding: 0;
-  margin: 0;
+  margin: 0 0 10px 0;
   text-align: center;
   width: 100%;
-  height: 50px;
+  padding: 20px;
   background-color: rgb(215, 235, 245);
+  border-radius: 0 0 1rem 1rem;
   box-shadow: 0px 10px 15px rgb(160, 160, 160);
   color: rgb(92, 115, 137);
 }
 
 #card-task-container {
   display: grid;
-  margin: 10px auto;
+  margin: 2px auto;
   align-self: center;
   justify-content: center;
   align-items: center;
   text-align: center;
   transition: transform 0.3s ease;
 }
-#card-task-container:hover {
-  scale: 110%;
-  size: 110%;
-}
+
 #task-item {
   cursor: pointer;
   transition: 0.3s ease;
