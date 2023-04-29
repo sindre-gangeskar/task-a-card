@@ -1,19 +1,14 @@
 /// <reference types="jquery" />
-window.onresize = () => {
-  setTimeout(() => {
-    drawCircle();
-    console.log("canvas refreshed!");
-  }, 100);
-};
 
-var gridSpacing = 25;
-var gridRadius = 1;
+var gridSpacing = 20;
+var gridRadius = 1.5;
 
 class Card {
   constructor() {
     const container = (this.container = $("<div id='card-container'></div>"));
     const head = (this.head = $("<div id='card-head'></div>"));
 
+    //#region Title
     /* Title Component */
     const titleContainer = (this.titlecontainer = $(
       '<div id="card-title-container"></div'
@@ -23,19 +18,35 @@ class Card {
     const titleInput = (this.titleInput = $(
       "<input id='card-title-input' placeholder='Enter Title Here' contenteditable='true'></input>"
     ));
+    //#endregion
+
+    //#region Task Component
+
     const content = (this.content = $(
       "<div id='card-content' title='Hold to drag'></div>"
     ));
-
-    /* Task Component */
     const taskContainer = (this.taskContainer = $(
       "<div id='card-task-container'></div>"
     ));
-    const taskInput = (this.input = $(
+    const appendTaskInput = (this.input = $(
       "<input id='card-input' placeholder='Enter Task'></input>"
     ));
+    const taskItem = (this.taskItem = $(
+      `<p id="task-item" class="mb-3 p-0" ></p>`
+    ));
 
-    const taskItem = (this.taskItem = $(`<ul id="task-item"></ul>`));
+    //#endregion
+
+    /* Make card draggable */
+    container.draggable({
+      revert: true,
+      start: function () {
+        $(this).css("z-index", 9999);
+      },
+      stop: function () {
+        $(this).css("z-index", "");
+      },
+    });
 
     /* Add the elements to the object */
     container.appendTo($("#body-content"));
@@ -43,23 +54,7 @@ class Card {
     titleContainer.appendTo(head);
     titleInput.appendTo(titleContainer);
     content.appendTo(container);
-    taskContainer.appendTo(content);
-    taskInput.appendTo(content);
-
-    /* Make card draggable */
-    container.on("mousedown", () => {
-      container.draggable({
-        revert: true,
-        start: function () {
-          $(this).css("z-index", 9999);
-        },
-        stop: function () {
-          $(this).css("z-index", "");
-        },
-      });
-
-      /* Make card swappable with other cards based on positioning */
-    });
+    appendTaskInput.appendTo(container);
 
     /* Assign title input value */
     titleInput.on("keypress", (e) => {
@@ -82,16 +77,16 @@ class Card {
     /* Task List & Task Input */
     let maxTasks = 5;
     let tasks = 0;
-    taskInput.on("keypress", (e) => {
+    appendTaskInput.on("keypress", (e) => {
       if (e.key === "Enter") {
         if (this.input.val() != "") {
+          taskContainer
+            .clone()
+            .append(taskItem.clone().text(this.input.val()))
+            .appendTo(content);
 
-          /* taskContainer.clone().appendTo(content); */
-          taskItem.clone().text(this.input.val()).appendTo(taskContainer.clone().appendTo(content))
-         /*  taskItem.clone().text(this.input.val()).appendTo(taskContainer); */
-
-          taskInput.blur();
-          taskInput.val("");
+          appendTaskInput.blur();
+          appendTaskInput.val("");
           tasks++;
         }
 
@@ -111,21 +106,38 @@ class Card {
     });
 
     /* Edit task item by clicking */
-    container.on("click", "#task-item", () => {
-      var itemInput = $(
-        "<input id='task-item-input' placeholder='Edit task here'></input>"
-      );
-      console.log("CLICKED");
-      if (!$(taskContainer).find("#task-item-input").length) {
-        taskContainer.append(itemInput);
-      } else return;
 
-      itemInput.on("keypress", (e) => {
-        if (e.key === "Enter" && itemInput.val() != "") {
-          console.log("Input registered: " + itemInput.val());
-         $(this).text(itemInput.val());
+    container.on("click", "#card-task-container", (event) => {
+      const container = $(event.target).closest("#card-task-container");
+      const item = container.find("#task-item");
+
+      if (item.length > 0) {
+        item.hide();
+        const editTask = $(
+          "<input placeholder='Edit Task Here' id='edit-task-input'></input>"
+        );
+        /* If the item doesn't have an item of #edit-task-input, append one and show it */
+        if (item.siblings("#edit-task-input").length === 0) {
+          container.append(editTask);
+          editTask.show();
+          editTask.focus();
+        }/* If item already has a sibling of edit-task-input, find it, and show it.  */
+         else if (item.siblings("#edit-task-input").length !== 0) {
+          container.find("#edit-task-input").show();
+          container.find("#edit-task-input").focus();
         }
-      });
+
+        /* Edit Task */
+        editTask.on("keypress", (e) => {
+          if (e.key === "Enter" && editTask.val() != "") {
+            item.text(editTask.val());
+            editTask.val("");
+            editTask.blur();
+            item.show();
+            editTask.hide();
+          }
+        });
+      }
     });
 
     container.css("scale: 1");
@@ -134,15 +146,19 @@ class Card {
 
 function CreateCard() {
   let card = new Card();
-  $(card.container).css("transform", "scale(0)");
+  $(card.container).css("transform", "scale(0)", "opacity(0)");
   setTimeout(() => {
-    $(card.container).css("transform", "scale(1)", 500);
+    $(card.container).css("transform", "scale(1)").animate({ opacity: 1 }, 500);
   });
 }
 
 function drawCircle() {
   const canvas = document.querySelector("canvas");
   const ctx = canvas.getContext("2d");
+  const circleColor = getComputedStyle(
+    document.documentElement
+  ).getPropertyValue("--circle-color");
+
   canvas.width = window.innerWidth;
   canvas.height = window.innerHeight;
 
@@ -152,7 +168,7 @@ function drawCircle() {
   for (x = 0; x < canvas.width; x += gridSpacing) {
     for (y = 0; y < canvas.height; y += gridSpacing) {
       ctx.beginPath();
-      ctx.fillStyle = "";
+      ctx.fillStyle = circleColor;
       ctx.arc(x, y, gridRadius, 0, gridSpacing);
       ctx.fill();
       ctx.closePath();
