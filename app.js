@@ -14,9 +14,9 @@ class Card {
       '<div id="card-title-container"></div'
     ));
 
-    const title = (this.title = $(`<h2 id='card-title' maxlength='14'>`));
+    const title = (this.title = $(`<p id='card-title'"></p>`));
     const titleInput = (this.titleInput = $(
-      "<input id='card-title-input' placeholder='Enter Title Here' contenteditable='true'></input>"
+      "<input id='card-title-input' placeholder='Enter Title Here' contenteditable='true' maxlength='10'></input>"
     ));
     //#endregion
 
@@ -29,10 +29,10 @@ class Card {
       "<div id='card-task-container'></div>"
     ));
     const appendTaskInput = (this.input = $(
-      "<input id='card-input' placeholder='Enter Task'></input>"
+      "<input id='card-input' placeholder='Enter Task' maxlength='14'></input>"
     ));
     const taskItem = (this.taskItem = $(
-      `<p id="task-item" class="mb-3 p-0" ></p>`
+      `<p id="task-item" ></p>`
     ));
 
     //#endregion
@@ -105,17 +105,17 @@ class Card {
       title.hide();
     });
 
+    
     /* Edit task item by clicking */
-
-    container.on("click", "#card-task-container", (event) => {
+    container.on("click", "#task-item", (event) => {
       const container = $(event.target).closest("#card-task-container");
       const item = container.find("#task-item");
-
+      const editTask = $(
+        "<input placeholder='Edit Task Here' id='edit-task-input' maxlength='14'></input>"
+      );
       if (item.length > 0) {
         item.hide();
-        const editTask = $(
-          "<input placeholder='Edit Task Here' id='edit-task-input'></input>"
-        );
+       
         /* If the item doesn't have an item of #edit-task-input, append one and show it */
         if (item.siblings("#edit-task-input").length === 0) {
           container.append(editTask);
