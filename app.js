@@ -175,3 +175,7 @@ function drawCircle() {
     }
   }
 }
+
+function about(){
+  alert("Created by Sindre Gangeskar");
+}
