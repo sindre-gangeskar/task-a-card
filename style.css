@@ -18,10 +18,8 @@
 }
 
 #canvas {
-  background-color: var(--theme-bg-color);
   position: absolute;
-  height: 100%;
-  width: 100%;
+  background-color: var(--theme-bg-color);
   z-index: -1;
 }
 
@@ -42,8 +40,8 @@
 
 #card-container:hover {
   transition: outline 50ms ease;
-  outline: 2px solid var(--theme-highlight-color);
-  outline-style:solid;
+  outline: 1px solid var(--theme-highlight-color);
+  outline-style: solid;
 }
 
 #card-title {
@@ -59,6 +57,25 @@
   border-bottom: 1px solid var(--theme-fg-color);
   border-radius: 0px 0px 10px 10px;
   cursor: pointer;
+}
+.popover {
+  text-align: center;
+  width: max-content;
+  height: fit-content;
+  color: white;
+  font-size: 0.5rem;
+  outline: 2px solid var(--theme-highlight-color);
+  outline-offset: -2px;
+  
+}
+.popover-body {
+  font-size: 0.75rem;
+  color: white;
+  background-color: var(--theme-bg-color);
+}
+.popover-header {
+  background-color: var(--theme-bg-color);
+  font-size: 0.8rem;
 }
 
 #card-title:hover {
@@ -77,7 +94,6 @@
   border-radius: 0px 0px 10px 10px;
   z-index: 1;
   text-overflow: ellipsis;
- 
 }
 #card-content {
   position: relative;
@@ -104,13 +120,13 @@
 }
 
 #task-item {
-  width:fit-content;
+  width: fit-content;
   margin: 0px auto;
   cursor: pointer;
   transition: 0.3s ease;
   text-align: center;
   align-items: center;
-  transition: 100ms ease;
+  transition: color 100ms ease;
 }
 
 #task-item:hover {

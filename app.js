@@ -11,7 +11,7 @@ class Card {
     //#region Title
     /* Title Component */
     const titleContainer = (this.titlecontainer = $(
-      '<div id="card-title-container"></div'
+      '<div id="card-title-container"></div>'
     ));
 
     const title = (this.title = $(`<p id='card-title'"></p>`));
@@ -31,9 +31,7 @@ class Card {
     const appendTaskInput = (this.input = $(
       "<input id='card-input' placeholder='Enter Task' maxlength='14'></input>"
     ));
-    const taskItem = (this.taskItem = $(
-      `<p id="task-item" ></p>`
-    ));
+    const taskItem = (this.taskItem = $(`<p id="task-item" ></p>`));
 
     //#endregion
 
@@ -105,40 +103,75 @@ class Card {
       title.hide();
     });
 
-    
     /* Edit task item by clicking */
     container.on("click", "#task-item", (event) => {
       const container = $(event.target).closest("#card-task-container");
-      const item = container.find("#task-item");
+      const item = container.find("#task-item")
       const editTask = $(
         "<input placeholder='Edit Task Here' id='edit-task-input' maxlength='14'></input>"
-      );
+      ).popover({
+        title: "Submit & Cancel",
+        content: "'Enter' to submit. \n 'Esc' to cancel edit.",
+        offset:"0px, 40px"
+      });
+
+      editTask.on("focus", () => {
+        editTask.popover("show");
+      });
+
+      editTask.on("blur", () => {
+        editTask.popover("hide");
+      });
+
+      /* Check if the container has an item, if it does, execute code */
       if (item.length > 0) {
         item.hide();
-       
+
         /* If the item doesn't have an item of #edit-task-input, append one and show it */
         if (item.siblings("#edit-task-input").length === 0) {
           container.append(editTask);
-          editTask.show();
-          editTask.focus();
-        }/* If item already has a sibling of edit-task-input, find it, and show it.  */
-         else if (item.siblings("#edit-task-input").length !== 0) {
-          container.find("#edit-task-input").show();
-          container.find("#edit-task-input").focus();
+        /*   editTask.popover("show", () => editTask.focus(() => {editTask.show()})); */
+
+   
+          editTask.focus()
+        } /* If item already has a sibling of edit-task-input, find it, and show it.  */ 
+        else if (item.siblings("#edit-task-input").length !== 0) {
+          let input = container.find("#edit-task-input");
+          input.show();
+          input.focus();
+
         }
 
         /* Edit Task */
-        editTask.on("keypress", (e) => {
+        editTask.on("keydown", (e) => {
           if (e.key === "Enter" && editTask.val() != "") {
             item.text(editTask.val());
             editTask.val("");
             editTask.blur();
             item.show();
             editTask.hide();
+          } else if (e.key === "Escape") {
+            editTask.val("");
+            editTask.blur();
+            editTask.hide();
+            item.show();
+
           }
         });
       }
     });
+
+    /* Popover for items on cards */
+  $(document).on('mouseenter', '#task-item', function () {
+    let task = $(this);
+    task.popover({title:"Click", content:"Click the task to edit", placement:"right", offset:"0, 40px"});
+    task.popover("toggle");
+    task.on('mouseleave', function(){
+      task.popover("toggle");
+    })
+  })
+
+
 
     container.css("scale: 1");
   }
@@ -160,7 +193,7 @@ function drawCircle() {
   ).getPropertyValue("--circle-color");
 
   canvas.width = window.innerWidth;
-  canvas.height = window.innerHeight;
+  canvas.height += window.innerHeight + document.body.scrollHeight;
 
   let x = 0;
   let y = 0;
@@ -176,6 +209,6 @@ function drawCircle() {
   }
 }
 
-function about(){
+function about() {
   alert("Created by Sindre Gangeskar");
 }
