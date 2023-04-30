@@ -196,7 +196,7 @@ class Card {
   }
 }
 
-function CreateCard() {
+function createCard() {
   let card = new Card();
   $(card.container).css("transform", "scale(0)", "opacity(0)");
   setTimeout(() => {
