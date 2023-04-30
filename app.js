@@ -47,7 +47,7 @@ class Card {
     });
 
     /* Add the elements to the object */
-    container.appendTo($("#body-content"));
+    container.appendTo($("body"));
     head.appendTo(container);
     titleContainer.appendTo(head);
     titleInput.appendTo(titleContainer);

@@ -9,12 +9,42 @@
 * {
   font-family: "Poppins", sans-serif;
 }
-#body-content {
+body {
+  margin-top: 100px;
   display: grid;
-  position: absolute;
   width: 100%;
   height: 100%;
   grid-template-columns: repeat(5, 6fr);
+}
+
+.top-nav {
+  width: 100%;
+  position: sticky;
+  top: 0;
+  z-index: 999;
+}
+
+#brand-card-01 {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: absolute;
+  margin: 10px auto;
+  left: 20px;
+}
+
+#brand-card-02 {
+  display: flex;
+  position: relative;
+  margin: 10px auto;
+  transform: rotateZ(35deg);
+}
+
+#card-01 {
+  fill: var(--theme-fg-color);
+}
+#card-02 {
+  fill: var(--theme-highlight-color);
 }
 
 #canvas {
@@ -25,7 +55,7 @@
 
 #card-container {
   overflow: hidden;
-  margin: 10px auto;
+  margin: 100px auto;
   width: 12rem;
   height: 18rem;
   background-color: var(--theme-bg-color);
@@ -48,37 +78,15 @@
   text-align: center;
   width: 100%;
   height: 40px;
-  text-overflow: ellipsis;
-  font-size: 1.8rem;
+  text-overflow: clip;
+  font-size: 1.5rem;
   text-transform: capitalize;
   align-items: center;
   margin: 10px auto;
   transition: 200ms ease;
-  border-bottom: 1px solid var(--theme-fg-color);
+  border-bottom: 2px solid var(--circle-color);
   border-radius: 0px 0px 10px 10px;
   cursor: pointer;
-}
-.popover {
-  text-align: center;
-  width: max-content;
-  height: fit-content;
-  color: white;
-  font-size: 0.5rem;
-  outline: 1px solid var(--theme-highlight-color);
-  outline-offset: -1px;
-  font-weight: 200;
-  border: none;
-}
-.popover-body {
-  padding:10px;
-  margin: 0;
-  font-size: 0.75rem;
-  color: white;
-  background-color: var(--theme-bg-color);
-}
-.popover-header {
-  background-color: var(--theme-bg-color);
-  font-size: 0.8rem;
 }
 
 #card-title:hover {
@@ -155,5 +163,28 @@ input {
   text-align: center;
   outline: none;
   color: white;
-  border-radius: 0.25rem;
+  border-radius: 0.15rem;
+}
+
+.popover {
+  text-align: center;
+  width: max-content;
+  height: fit-content;
+  color: white;
+  font-size: 0.5rem;
+  outline: 1px solid var(--theme-highlight-color);
+  outline-offset: -1px;
+  font-weight: 200;
+  border: none;
+}
+.popover-body {
+  padding: 10px;
+  margin: 0;
+  font-size: 0.75rem;
+  color: white;
+  background-color: var(--theme-bg-color);
+}
+.popover-header {
+  background-color: var(--theme-bg-color);
+  font-size: 0.8rem;
 }
