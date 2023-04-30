@@ -206,13 +206,15 @@ function createCard() {
 
 function drawCircle() {
   const canvas = document.querySelector("canvas");
+  const body = document.querySelector('body');
   const ctx = canvas.getContext("2d");
   const circleColor = getComputedStyle(
     document.documentElement
   ).getPropertyValue("--circle-color");
 
   canvas.width = window.innerWidth;
-  canvas.height += window.innerHeight + document.body.scrollHeight;
+  canvas.height += window.innerHeight;
+
 
   let x = 0;
   let y = 0;
@@ -231,3 +233,6 @@ function drawCircle() {
 function about() {
   alert("Created by Sindre Gangeskar");
 }
+
+
+

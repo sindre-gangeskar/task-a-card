@@ -12,10 +12,9 @@
 body {
   margin-top: 100px;
   display: grid;
-  width: 100%;
-  height: 100%;
   grid-template-columns: repeat(5, 6fr);
 }
+
 
 .top-nav {
   width: 100%;
