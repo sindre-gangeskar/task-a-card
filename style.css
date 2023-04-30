@@ -64,11 +64,14 @@
   height: fit-content;
   color: white;
   font-size: 0.5rem;
-  outline: 2px solid var(--theme-highlight-color);
-  outline-offset: -2px;
-  
+  outline: 1px solid var(--theme-highlight-color);
+  outline-offset: -1px;
+  font-weight: 200;
+  border: none;
 }
 .popover-body {
+  padding:10px;
+  margin: 0;
   font-size: 0.75rem;
   color: white;
   background-color: var(--theme-bg-color);

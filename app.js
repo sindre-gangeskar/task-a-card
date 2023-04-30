@@ -106,13 +106,13 @@ class Card {
     /* Edit task item by clicking */
     container.on("click", "#task-item", (event) => {
       const container = $(event.target).closest("#card-task-container");
-      const item = container.find("#task-item")
+      const item = container.find("#task-item");
       const editTask = $(
         "<input placeholder='Edit Task Here' id='edit-task-input' maxlength='14'></input>"
       ).popover({
         title: "Submit & Cancel",
         content: "'Enter' to submit. \n 'Esc' to cancel edit.",
-        offset:"0px, 40px"
+        offset: "0px, 40px",
       });
 
       editTask.on("focus", () => {
@@ -130,16 +130,15 @@ class Card {
         /* If the item doesn't have an item of #edit-task-input, append one and show it */
         if (item.siblings("#edit-task-input").length === 0) {
           container.append(editTask);
-        /*   editTask.popover("show", () => editTask.focus(() => {editTask.show()})); */
+          /*   editTask.popover("show", () => editTask.focus(() => {editTask.show()})); */
 
-   
-          editTask.focus()
-        } /* If item already has a sibling of edit-task-input, find it, and show it.  */ 
-        else if (item.siblings("#edit-task-input").length !== 0) {
+          editTask.focus();
+        } /* If item already has a sibling of edit-task-input, find it, and show it.  */ else if (
+          item.siblings("#edit-task-input").length !== 0
+        ) {
           let input = container.find("#edit-task-input");
           input.show();
           input.focus();
-
         }
 
         /* Edit Task */
@@ -155,24 +154,44 @@ class Card {
             editTask.blur();
             editTask.hide();
             item.show();
-
           }
         });
       }
     });
 
-    /* Popover for items on cards */
-  $(document).on('mouseenter', '#task-item', function () {
-    let task = $(this);
-    task.popover({title:"Click", content:"Click the task to edit", placement:"right", offset:"0, 40px"});
-    task.popover("toggle");
-    task.on('mouseleave', function(){
-      task.popover("toggle");
-    })
-  })
+    /* Title popover */
+    $(document).on("mouseenter", "#card-title", function () {
+      let element = $(this);
 
+      element.popover({
+        title: "Click",
+        content: "Click to edit",
+        placement: "right",
+        offset: "0, 40px",
+      });
+      element.popover("toggle");
 
+      element.on("mouseleave", function () {
+        element.popover("toggle");
+      });
+    });
 
+    /* Item popover */
+    $(document).on("mouseenter", "#task-item", function () {
+      let element = $(this);
+
+      element.popover({
+        title: "Click",
+        content: "Click to edit",
+        placement: "right",
+        offset: "0, 40px",
+      });
+      element.popover("toggle");
+
+      element.on("mouseleave", function () {
+        element.popover("toggle");
+      });
+    });
     container.css("scale: 1");
   }
 }
