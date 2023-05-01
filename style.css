@@ -4,7 +4,7 @@
   --theme-bg-color: #212529;
   --theme-fg-color: #00a9d8;
   --theme-container-color: #2b3036;
-  --theme-highlight-color: #00c6d3;
+  --theme-highlight-color: #25b6ff;
 }
 * {
   font-family: "Poppins", sans-serif;
@@ -21,6 +21,19 @@ body {
   position: sticky;
   top: 0;
   z-index: 999;
+}
+#add-card{
+  font-size:1.3rem;
+  width:80px;
+  height:60px;
+ background-color: var(--theme-fg-color);
+ transition:100ms ease;
+}
+#add-card:hover{
+  font-size: 1.2rem;
+  outline:2px solid white;
+  outline-offset: -4px;
+  background-color: var(--theme-highlight-color);
 }
 
 #brand-card-01 {
@@ -75,7 +88,7 @@ body {
 
 #card-title {
   text-align: center;
-  width: 100%;
+  width: fit-content;
   height: 40px;
   text-overflow: clip;
   font-size: 1.5rem;

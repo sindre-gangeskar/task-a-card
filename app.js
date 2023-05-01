@@ -126,17 +126,16 @@ class Card {
       /* Check if the container has an item, if it does, execute code */
       if (item.length > 0) {
         item.hide();
+        editTask.val(item.text());
 
-        /* If the item doesn't have an item of #edit-task-input, append one and show it */
+        /* If the item doesn't have an item of #edit-task-input, append one */
         if (item.siblings("#edit-task-input").length === 0) {
           container.append(editTask);
-          /*   editTask.popover("show", () => editTask.focus(() => {editTask.show()})); */
-
-          editTask.focus();
         } /* If item already has a sibling of edit-task-input, find it, and show it.  */ else if (
           item.siblings("#edit-task-input").length !== 0
         ) {
           let input = container.find("#edit-task-input");
+          input.val(item.text());
           input.show();
           input.focus();
         }
