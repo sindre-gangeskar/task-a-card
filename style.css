@@ -9,13 +9,13 @@
 * {
   font-family: "Poppins", sans-serif;
 }
-/* body {
+body {
   margin-top: 100px;
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
   transition: grid-template-columns 0.5s ease;
-} */
-.wrapper{
+}
+/* .wrapper{
   width:100%;
   height:100%;
   position: absolute;
@@ -24,7 +24,7 @@
   grid-gap: 10px;
   grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
   transition: grid-template-columns 0.3s ease;
-}
+} */
 
 
 .top-nav {
