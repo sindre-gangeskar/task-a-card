@@ -5,7 +5,9 @@ var gridRadius = 1.5;
 
 class Card {
   constructor() {
-    const container = (this.container = $("<div id='card-container'></div>"));
+    const container = (this.container = $(
+      "<div id='card-container' class='card-hover'></div>"
+    ));
     const head = (this.head = $("<div id='card-head'></div>"));
 
     //#region Title
@@ -33,6 +35,12 @@ class Card {
     ));
     const taskItem = (this.taskItem = $(`<p id="task-item" ></p>`));
 
+    const deleteBtn = (this.deleteBtn = $(
+      '<button class="btn delete-btn" role="button">DETETETE</button'
+    ));
+    const deleteIcon = (this.deleteIcon = $(
+      '<i class="bi bi-x-lg delete-icon"></i>'
+    ));
     //#endregion
 
     /* Make card draggable */
@@ -47,13 +55,15 @@ class Card {
     });
 
     /* Add the elements to the object */
-    container.appendTo($("body"));
+    container.appendTo($(".wrapper"));
+
     head.appendTo(container);
     titleContainer.appendTo(head);
     titleInput.appendTo(titleContainer);
     content.appendTo(container);
     appendTaskInput.appendTo(container);
-
+    deleteBtn.appendTo(head);
+    deleteBtn.append(deleteIcon);
     /* Assign title input value */
     titleInput.on("keypress", (e) => {
       if (e.key === "Enter") {
@@ -100,6 +110,7 @@ class Card {
     title.on("click", () => {
       titleInput.show();
       titleInput.focus();
+      titleInput.select();
       title.hide();
     });
 
@@ -131,6 +142,8 @@ class Card {
         /* If the item doesn't have an item of #edit-task-input, append one */
         if (item.siblings("#edit-task-input").length === 0) {
           container.append(editTask);
+          editTask.focus();
+          editTask.select();
         } /* If item already has a sibling of edit-task-input, find it, and show it.  */ else if (
           item.siblings("#edit-task-input").length !== 0
         ) {
@@ -138,6 +151,7 @@ class Card {
           input.val(item.text());
           input.show();
           input.focus();
+          input.select();
         }
 
         /* Edit Task */
@@ -175,6 +189,16 @@ class Card {
       });
     });
 
+    /* Delete Card */
+    $(document).on("click", "#card-container .delete-btn", function () {
+      $(this).closest("#card-container").css("transform", "scale(0)");
+      $(this).closest("#card-container").removeClass("card-hover");
+
+      setTimeout(() => {
+        $(this).closest("#card-container").remove();
+      }, 500);
+    });
+
     /* Item popover */
     $(document).on("mouseenter", "#task-item", function () {
       let element = $(this);
@@ -191,21 +215,20 @@ class Card {
         element.popover("toggle");
       });
     });
-    container.css("scale: 1");
   }
 }
 
 function createCard() {
   let card = new Card();
-  $(card.container).css("transform", "scale(0)", "opacity(0)");
+  $(card.container).css("transform", "scale(0)");
   setTimeout(() => {
-    $(card.container).css("transform", "scale(1)").animate({ opacity: 1 }, 500);
+    $(card.container).css("transform", "scale(1)");
   });
 }
 
 function drawCircle() {
   const canvas = document.querySelector("canvas");
-  const body = document.querySelector('body');
+  const body = document.querySelector("body");
   const ctx = canvas.getContext("2d");
   const circleColor = getComputedStyle(
     document.documentElement
@@ -213,7 +236,6 @@ function drawCircle() {
 
   canvas.width = window.innerWidth;
   canvas.height += window.innerHeight;
-
 
   let x = 0;
   let y = 0;
@@ -232,6 +254,3 @@ function drawCircle() {
 function about() {
   alert("Created by Sindre Gangeskar");
 }
-
-
-

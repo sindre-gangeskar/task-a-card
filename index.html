@@ -17,7 +17,6 @@
     <link rel="stylesheet" href="style.css" />
     <title>Task A Card</title>
   </head>
-
   <body>
     <div class="top-nav sticky-top position-fixed">
       <nav
@@ -52,14 +51,16 @@
         <p class="fw-light align-baseline m-auto">
           Simple and easy to use to-do application
         </p>
-        <button class="nav-item btn text-white m-3" id="add-card" onclick="createCard()">
+        <button
+          class="nav-item btn text-white m-3"
+          id="add-card"
+          onclick="createCard()"
+        >
           <i class="bi bi-card-text"></i>
           +
         </button>
-        <div class="collapse navbar-collapse" id="navbarNav">
-          
-        </div>
-        
+        <div class="collapse navbar-collapse" id="navbarNav"></div>
+
         <ul class="navbar-nav">
           <li>
             <a href="#" class="nav-link" onclick="about()" role="">About</a>
@@ -70,7 +71,8 @@
         </ul>
       </nav>
     </div>
-
+   
+    <div class="wrapper"></div>
     <canvas id="canvas" class="container-fluid"></canvas>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
