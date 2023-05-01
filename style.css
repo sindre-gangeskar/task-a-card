@@ -175,6 +175,7 @@ input {
   outline-offset: -1px;
   font-weight: 200;
   border: none;
+  opacity:0.75;
 }
 .popover-body {
   padding: 10px;
