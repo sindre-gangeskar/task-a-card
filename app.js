@@ -55,7 +55,7 @@ class Card {
     });
 
     /* Add the elements to the object */
-    container.appendTo($(".wrapper"));
+    container.appendTo($("body"));
 
     head.appendTo(container);
     titleContainer.appendTo(head);
