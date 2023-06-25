@@ -2,11 +2,12 @@
 
 var gridSpacing = 20;
 var gridRadius = 1.5;
+var cards = [];
 
 class Card {
   constructor() {
     const container = (this.container = $(
-      "<div id='card-container' class='card-hover'></div>"
+      "<div id='card-container' class='card-hover sortable'></div>"
     ));
     const head = (this.head = $("<div id='card-head'></div>"));
 
@@ -41,22 +42,11 @@ class Card {
     const deleteIcon = (this.deleteIcon = $(
       '<i class="bi bi-x-lg delete-icon"></i>'
     ));
-    //#endregion
 
-    /* Make card draggable */
-    container.draggable({
-      revert: true,
-      start: function () {
-        $(this).css("z-index", 9999);
-      },
-      stop: function () {
-        $(this).css("z-index", "");
-      },
-    });
+    //#endregion
 
     /* Add the elements to the object */
     container.appendTo($("body"));
-
     head.appendTo(container);
     titleContainer.appendTo(head);
     titleInput.appendTo(titleContainer);
@@ -64,6 +54,14 @@ class Card {
     appendTaskInput.appendTo(container);
     deleteBtn.appendTo(head);
     deleteBtn.append(deleteIcon);
+
+    /* Add  */
+    $("body").sortable({
+      items: $(".sortable"),
+      tolerance: "pointer",
+      revert: false,
+    });
+
     /* Assign title input value */
     titleInput.on("keypress", (e) => {
       if (e.key === "Enter") {
@@ -215,6 +213,7 @@ class Card {
         element.popover("toggle");
       });
     });
+    cards.push(this);
   }
 }
 
@@ -253,4 +252,10 @@ function drawCircle() {
 
 function about() {
   alert("Created by Sindre Gangeskar");
+}
+
+function getCards() {
+  cards.forEach((card) => {
+    console.log(card.container);
+  });
 }
