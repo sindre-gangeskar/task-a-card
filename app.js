@@ -1,52 +1,34 @@
 /// <reference types="jquery" />
 
-var gridSpacing = 20;
-var gridRadius = 1.5;
 var cards = [];
 
 class Card {
   constructor() {
-    const container = (this.container = $(
-      "<div id='card-container' class='card-hover sortable'></div>"
-    ));
+    const container = (this.container = $("<div id='card-container' class='card-hover sortable'></div>"));
     const head = (this.head = $("<div id='card-head'></div>"));
 
     //#region Title
     /* Title Component */
-    const titleContainer = (this.titlecontainer = $(
-      '<div id="card-title-container"></div>'
-    ));
+    const titleContainer = (this.titlecontainer = $('<div id="card-title-container"></div>'));
 
     const title = (this.title = $(`<p id='card-title'"></p>`));
-    const titleInput = (this.titleInput = $(
-      "<input id='card-title-input' placeholder='Enter Title Here' contenteditable='true' maxlength='10'></input>"
-    ));
+    const titleInput = (this.titleInput = $("<input id='card-title-input' placeholder='Enter Title Here' contenteditable='true' maxlength='10'></input>"));
     //#endregion
 
     //#region Task Component
 
-    const content = (this.content = $(
-      "<div id='card-content' title='Hold to drag'></div>"
-    ));
-    const taskContainer = (this.taskContainer = $(
-      "<div id='card-task-container'></div>"
-    ));
-    const appendTaskInput = (this.input = $(
-      "<input id='card-input' placeholder='Enter Task' maxlength='14'></input>"
-    ));
+    const content = (this.content = $("<div id='card-content' title='Hold to drag'></div>"));
+    const taskContainer = (this.taskContainer = $("<div id='card-task-container'></div>"));
+    const appendTaskInput = (this.input = $("<input id='card-input' placeholder='Enter Task' maxlength='14'></input>"));
     const taskItem = (this.taskItem = $(`<p id="task-item" ></p>`));
 
-    const deleteBtn = (this.deleteBtn = $(
-      '<button class="btn delete-btn" role="button">DETETETE</button'
-    ));
-    const deleteIcon = (this.deleteIcon = $(
-      '<i class="bi bi-x-lg delete-icon"></i>'
-    ));
+    const deleteBtn = (this.deleteBtn = $('<button class="btn delete-btn" role="button">DETETETE</button'));
+    const deleteIcon = (this.deleteIcon = $('<i class="bi bi-x-lg delete-icon"></i>'));
 
     //#endregion
 
     /* Add the elements to the object */
-    container.appendTo($("body"));
+    container.appendTo($(".wrapper"));
     head.appendTo(container);
     titleContainer.appendTo(head);
     titleInput.appendTo(titleContainer);
@@ -55,11 +37,10 @@ class Card {
     deleteBtn.appendTo(head);
     deleteBtn.append(deleteIcon);
 
-    /* Add  */
-    $("body").sortable({
-      items: $(".sortable"),
+    $(".wrapper").sortable({
+      placeholder: "marker",
+      items: ".sortable",
       tolerance: "pointer",
-      revert: false,
     });
 
     /* Assign title input value */
@@ -86,10 +67,7 @@ class Card {
     appendTaskInput.on("keypress", (e) => {
       if (e.key === "Enter") {
         if (this.input.val() != "") {
-          taskContainer
-            .clone()
-            .append(taskItem.clone().text(this.input.val()))
-            .appendTo(content);
+          taskContainer.clone().append(taskItem.clone().text(this.input.val())).appendTo(content);
 
           appendTaskInput.blur();
           appendTaskInput.val("");
@@ -116,9 +94,7 @@ class Card {
     container.on("click", "#task-item", (event) => {
       const container = $(event.target).closest("#card-task-container");
       const item = container.find("#task-item");
-      const editTask = $(
-        "<input placeholder='Edit Task Here' id='edit-task-input' maxlength='14'></input>"
-      ).popover({
+      const editTask = $("<input placeholder='Edit Task Here' id='edit-task-input' maxlength='14'></input>").popover({
         title: "Submit & Cancel",
         content: "'Enter' to submit. \n 'Esc' to cancel edit.",
         offset: "0px, 40px",
@@ -142,9 +118,7 @@ class Card {
           container.append(editTask);
           editTask.focus();
           editTask.select();
-        } /* If item already has a sibling of edit-task-input, find it, and show it.  */ else if (
-          item.siblings("#edit-task-input").length !== 0
-        ) {
+        } /* If item already has a sibling of edit-task-input, find it, and show it.  */ else if (item.siblings("#edit-task-input").length !== 0) {
           let input = container.find("#edit-task-input");
           input.val(item.text());
           input.show();
@@ -189,7 +163,7 @@ class Card {
 
     /* Delete Card */
     $(document).on("click", "#card-container .delete-btn", function () {
-      $(this).closest("#card-container").css("transform", "scale(0)");
+      $(this).closest("#card-container").css({ transition: "transform 300ms cubic-bezier(0.445, 0.05, 0.55, 0.95)", transform: "scale(0)", outline: "none" });
       $(this).closest("#card-container").removeClass("card-hover");
 
       setTimeout(() => {
@@ -213,41 +187,50 @@ class Card {
         element.popover("toggle");
       });
     });
-    cards.push(this);
+    cards.push($(this));
   }
 }
 
 function createCard() {
   let card = new Card();
   $(card.container).css("transform", "scale(0)");
+
   setTimeout(() => {
     $(card.container).css("transform", "scale(1)");
-  });
+  }, 300);
 }
 
 function drawCircle() {
   const canvas = document.querySelector("canvas");
-  const body = document.querySelector("body");
   const ctx = canvas.getContext("2d");
-  const circleColor = getComputedStyle(
-    document.documentElement
-  ).getPropertyValue("--circle-color");
+  const circleColor = getComputedStyle(document.documentElement).getPropertyValue("--circle-color");
+  
+  const dotSize = 1.5; // Adjust the dot size as desired
+  const gridSpacing = 15;
 
-  canvas.width = window.innerWidth;
-  canvas.height += window.innerHeight;
 
-  let x = 0;
-  let y = 0;
+  const numDotsX = Math.ceil(canvas.width / dotSize);
+  const numDotsY = Math.ceil(canvas.height / dotSize);
 
-  for (x = 0; x < canvas.width; x += gridSpacing) {
-    for (y = 0; y < canvas.height; y += gridSpacing) {
+  const gridSpacingX = Math.ceil(canvas.width / numDotsX * gridSpacing);
+  const gridSpacingY = Math.ceil(canvas.height / numDotsY *  gridSpacing);
+
+  for (let x = 0; x < canvas.width; x += gridSpacingX) {
+    for (let y = 0; y < canvas.height; y += gridSpacingY) {
       ctx.beginPath();
       ctx.fillStyle = circleColor;
-      ctx.arc(x, y, gridRadius, 0, gridSpacing);
+      ctx.arc(x, y, dotSize, 0, Math.PI * 2);
       ctx.fill();
       ctx.closePath();
     }
   }
+
+  var dataURL = canvas.toDataURL();
+  return dataURL;
+}
+
+function returnDimensions(x, y) {
+  return { x, y };
 }
 
 function about() {
@@ -255,7 +238,8 @@ function about() {
 }
 
 function getCards() {
+  console.clear();
   cards.forEach((card) => {
-    console.log(card.container);
+    console.log($(card.container));
   });
 }

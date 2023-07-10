@@ -2,23 +2,31 @@
 :root {
   --circle-color: #2b3036;
   --theme-bg-color: #212529;
-  --theme-fg-color: #00a9d8;
+  --theme-fg-color: #0fc1f2;
   --theme-container-color: #2b3036;
-  --theme-highlight-color: #25b6ff;
+  --theme-highlight-color: #5fc6fa;
 }
 * {
   font-family: "Poppins", sans-serif;
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  place-content: center;
 }
 body {
-  margin-top: 100px;
+  background-color: var(--theme-bg-color);
+}
+.wrapper {
+  margin-top: 10rem;
+  height:100%;
+  width:100%;
+  position: absolute;
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-  transition: grid-template-columns 0.5s ease;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
 }
 
 .top-nav {
   width: 100%;
-  position: sticky;
   top: 0;
   z-index: 999;
 }
@@ -32,23 +40,20 @@ body {
 #add-card:hover {
   font-size: 1.2rem;
   outline: 2px solid white;
-  outline-offset: -4px;
+  outline-offset: -1px;
   background-color: var(--theme-highlight-color);
 }
 
 #brand-card-01 {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  position: absolute;
-  margin: 10px auto;
+  position: relative;
+  margin: 5px auto;
+  transform: rotateZ(-15deg);
   left: 20px;
 }
 
 #brand-card-02 {
-  display: flex;
   position: relative;
-  margin: 10px auto;
+  margin: 5px auto;
   transform: rotateZ(35deg);
 }
 
@@ -59,14 +64,9 @@ body {
   fill: var(--theme-highlight-color);
 }
 
-#canvas {
-  position: absolute;
-  background-color: var(--theme-bg-color);
-  z-index: -1;
-}
-
 #card-container {
-
+  cursor: grab;
+  transform: scale(1);
   margin: 100px auto;
   width: 12rem;
   height: 18rem;
@@ -75,17 +75,17 @@ body {
   border-radius: 0.5rem;
   justify-content: center;
   align-items: center;
-  box-shadow: 5px 10px 25px rgba(0, 0, 0, 0.311);
+  box-shadow: 0px 10px 10px rgba(0, 0, 0, 0.311);
+  outline: 0px solid rgba(0, 0, 0, 0);
   text-align: center;
-  transition: transform 0.5s ease;
+  transition: transform 0.5s cubic-bezier(0.19, 1, 0.22, 1), scale 300ms cubic-bezier(0.19, 1, 0.22, 1), outline 600ms cubic-bezier(0.19, 1, 0.22, 1);
   border: 3px solid var(--theme-container-color);
   user-select: none;
-
 }
-
-.card-hover:hover {
+#card-container:hover {
+  scale: 110%;
   outline: 1px solid var(--theme-highlight-color);
-  outline-offset: -1px;
+  outline-style: ridge;
 }
 
 #card-title {
@@ -220,3 +220,32 @@ input {
   color: red;
   border: none;
 }
+.card-hover {
+  transition: outline 300ms ease;
+}
+.card-hover:hover {
+  outline: 1px solid var(--theme-highlight-color);
+}
+
+/* @media (min-width: 600px) {
+  .wrapper {
+    margin-top: 50rem;
+  }
+}
+
+@media (max-width: 768px) {
+  .wrapper {
+    margin-top: 35rem;
+  }
+}
+@media (min-width: 900px) and (max-width: 1200px) {
+  .wrapper {
+    margin-top: 50rem;
+  }
+}
+
+@media (min-width: 1200px) {
+  .wrapper {
+    margin-top: 5rem;
+  }
+} */
