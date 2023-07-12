@@ -1,4 +1,5 @@
 @import url("https://fonts.googleapis.com/css2?family=Poppins:wght@100;200;300;400;500;600;700;800&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Quicksand:wght@300;400;500;600;700&display=swap");
 :root {
   --circle-color: #2b3036;
   --theme-bg-color: #212529;
@@ -7,7 +8,7 @@
   --theme-highlight-color: #5fc6fa;
 }
 * {
-  font-family: "Poppins", sans-serif;
+  font-family: "Quicksand", sans-serif;
   margin: 0;
   padding: 0;
   box-sizing: border-box;
@@ -17,53 +18,51 @@ body {
   background-color: var(--theme-bg-color);
 }
 .wrapper {
-  margin-top: 10rem;
-  height:100%;
-  width:100%;
-  position: absolute;
+  position: relative;
   display: grid;
+  justify-content: center;
+  align-items: center;
+  margin-top: 10rem;
   grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
 }
-
 .top-nav {
   width: 100%;
   top: 0;
   z-index: 999;
 }
 #add-card {
-  font-size: 1.3rem;
-  width: 80px;
+  font-size: 1.5rem;
+  width: 100px;
   height: 60px;
   background-color: var(--theme-fg-color);
-  transition: 100ms ease;
+  transition: 400ms cubic-bezier(0.19, 1, 0.22, 1);
 }
 #add-card:hover {
+  scale: 110%;
   font-size: 1.2rem;
-  outline: 2px solid white;
-  outline-offset: -1px;
+  border: 1px solid var(--theme-highlight-color);
+}
+#add-card:active {
+  scale: 115%;
   background-color: var(--theme-highlight-color);
 }
-
 #brand-card-01 {
   position: relative;
   margin: 5px auto;
   transform: rotateZ(-15deg);
   left: 20px;
 }
-
 #brand-card-02 {
   position: relative;
   margin: 5px auto;
   transform: rotateZ(35deg);
 }
-
 #card-01 {
   fill: var(--theme-fg-color);
 }
 #card-02 {
   fill: var(--theme-highlight-color);
 }
-
 #card-container {
   cursor: grab;
   transform: scale(1);
@@ -87,7 +86,6 @@ body {
   outline: 1px solid var(--theme-highlight-color);
   outline-style: ridge;
 }
-
 #card-title {
   text-align: center;
   width: fit-content;
@@ -100,11 +98,9 @@ body {
   transition: 200ms ease;
   cursor: pointer;
 }
-
 #card-title:hover {
   color: var(--theme-fg-color);
 }
-
 #card-head {
   top: 10px;
   margin: 10px auto;
@@ -125,16 +121,14 @@ body {
   background-color: var(--theme-bg-color);
   width: 100%;
   height: 50%;
-  top: 30%;
+  top: 25%;
+  padding: 10px;
   bottom: 20%;
   text-align: center;
-  display: flex;
-  flex-direction: column;
-  margin: 0px auto;
-  justify-content: top;
+  justify-content: center;
+  align-items: center;
   border-bottom: 1px solid var(--theme-container-color);
 }
-
 #card-input {
   margin: 10px auto;
   display: flex;
@@ -145,7 +139,6 @@ body {
   position: absolute;
   bottom: 5px;
 }
-
 #task-item {
   width: fit-content;
   margin: 0px auto;
@@ -155,11 +148,9 @@ body {
   align-items: center;
   transition: color 100ms ease;
 }
-
 #task-item:hover {
   color: var(--theme-fg-color);
 }
-
 #card-task-container {
   justify-content: center;
   align-items: center;
@@ -170,7 +161,6 @@ body {
   padding: 5px;
   margin: 0 auto;
 }
-
 input {
   width: 80%;
   border: none;
@@ -181,7 +171,6 @@ input {
   color: white;
   border-radius: 0.15rem;
 }
-
 .popover {
   text-align: center;
   width: max-content;
@@ -226,26 +215,3 @@ input {
 .card-hover:hover {
   outline: 1px solid var(--theme-highlight-color);
 }
-
-/* @media (min-width: 600px) {
-  .wrapper {
-    margin-top: 50rem;
-  }
-}
-
-@media (max-width: 768px) {
-  .wrapper {
-    margin-top: 35rem;
-  }
-}
-@media (min-width: 900px) and (max-width: 1200px) {
-  .wrapper {
-    margin-top: 50rem;
-  }
-}
-
-@media (min-width: 1200px) {
-  .wrapper {
-    margin-top: 5rem;
-  }
-} */

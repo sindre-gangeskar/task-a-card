@@ -199,24 +199,26 @@ function createCard() {
     $(card.container).css("transform", "scale(1)");
   }, 300);
 }
-
-function drawCircle() {
+function drawGrid() {
   const canvas = document.querySelector("canvas");
   const ctx = canvas.getContext("2d");
   const circleColor = getComputedStyle(document.documentElement).getPropertyValue("--circle-color");
-  
-  const dotSize = 1.5; // Adjust the dot size as desired
+
+  const dotSize = 2; // Adjust the dot size as desired
   const gridSpacing = 15;
 
+  canvas.width = 32;
+  canvas.height= 32;
 
-  const numDotsX = Math.ceil(canvas.width / dotSize);
-  const numDotsY = Math.ceil(canvas.height / dotSize);
+  const offset = 4;
+  const numDotsX = Math.floor(canvas.width / dotSize);
+  const numDotsY = Math.floor(canvas.height / dotSize);
 
-  const gridSpacingX = Math.ceil(canvas.width / numDotsX * gridSpacing);
-  const gridSpacingY = Math.ceil(canvas.height / numDotsY *  gridSpacing);
+  const gridSpacingX = Math.floor((canvas.width / numDotsX) * gridSpacing);
+  const gridSpacingY = Math.floor((canvas.height / numDotsY) * gridSpacing);
 
-  for (let x = 0; x < canvas.width; x += gridSpacingX) {
-    for (let y = 0; y < canvas.height; y += gridSpacingY) {
+  for (let x = offset; x < canvas.width; x += gridSpacingX) {
+    for (let y = offset; y < canvas.height; y += gridSpacingY) {
       ctx.beginPath();
       ctx.fillStyle = circleColor;
       ctx.arc(x, y, dotSize, 0, Math.PI * 2);
@@ -228,15 +230,9 @@ function drawCircle() {
   var dataURL = canvas.toDataURL();
   return dataURL;
 }
-
-function returnDimensions(x, y) {
-  return { x, y };
-}
-
 function about() {
   alert("Created by Sindre Gangeskar");
 }
-
 function getCards() {
   console.clear();
   cards.forEach((card) => {
