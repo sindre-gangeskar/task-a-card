@@ -31,19 +31,24 @@ body {
   z-index: 999;
 }
 #add-card {
-  font-size: 1.5rem;
-  width: 100px;
-  height: 60px;
-  background-color: var(--theme-fg-color);
+  display: flex;
+  text-align: center;
+  align-items: center;
+  gap: 2px;
+  padding: 10px auto;
+  justify-content: center;
+  width: 80px;
+  height: 50px;
+  background-color: var(--theme-bg-color);
   transition: 400ms cubic-bezier(0.19, 1, 0.22, 1);
 }
 #add-card:hover {
-  scale: 110%;
+  scale: 90%;
   font-size: 1.2rem;
-  border: 1px solid var(--theme-highlight-color);
+  background-color: var(--theme-fg-color);
 }
 #add-card:active {
-  scale: 115%;
+  scale: 110%;
   background-color: var(--theme-highlight-color);
 }
 #brand-card-01 {

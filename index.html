@@ -29,13 +29,18 @@
           </a>
         </div>
       
+        <!-- Center Nav -->
         <div class="navbar-collapse">
           <p class="fw-light m-auto navbar-collapse collapse">Simple and easy to use to-do application</p>
-          <label for="add-card">Create card</label>
-          <button class="nav-item btn text-white m-3 bg-dark" id="add-card" onclick="createCard()">
-            <i class="bi bi-square fs-4"></i>
-            +
-          </button>
+         
+         <div class="create-card-container d-flex">
+           <label for="add-card" class="p-2 navbar-collapse collapse">Create card</label>
+           <button class="nav-item btn text-white m-auto" id="add-card" onclick="createCard()">
+             <i class="bi bi-square fs-4"></i>
+             +
+           </button>
+
+         </div>
        <!--    <button class="btn bg-primary text-white" type="button" onclick="getCards()">Get Cards (Debug)</button> -->
         </div>
 
