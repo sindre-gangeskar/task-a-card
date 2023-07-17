@@ -219,14 +219,4 @@ input {
   color: red;
   border: none;
 }
-.card-hover {
-  transition: outline 300ms ease;
-}
-.card-hover:hover {
-  outline: 1px solid var(--theme-highlight-color);
-}
-.page-container {
-  /*   left:50%;
-  margin-top: 1em !important;
-  transform: translateX(-50%); */
-}
+

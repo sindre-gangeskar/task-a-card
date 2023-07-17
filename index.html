@@ -13,14 +13,9 @@
     <title>Task A Card</title>
   </head>
   <body>
-
-
-   
-
     <canvas id="canvas" class="canvas" hidden="true"></canvas>
     <div class="top-nav sticky-top position-fixed col-lg-3 col-md-2 col-sm-1">
       <nav class="navbar navbar-expand-md navbar-light bg-light fs-5 container-fluid w-100">
-
         <!-- Left-side Nav -->
         <div class="logo d-flex justify-content-center align-content-center ps-5">
             <svg id="brand-card-01" width="40" height="60">
@@ -31,8 +26,7 @@
             </svg>
             <a href="#" class="navbar-brand fs-1 ms-5">Task a card </a>
           </a>
-        </div>
-      
+        </div>   
         <!-- Center Nav -->
         <div class="navbar-collapse">
           <p class="fw-light m-auto navbar-collapse collapse">Simple and easy to use to-do application</p>
@@ -42,13 +36,9 @@
            <button class="nav-item btn text-white m-auto" id="add-card" onclick="createCard()">
              <i class="bi bi-square fs-4"></i>
              +
-           </button>
-
-            
+           </button>  
          </div>
-       <!--    <button class="btn bg-primary text-white" type="button" onclick="getCards()">Get Cards (Debug)</button> -->
         </div>
-
         <!-- Right-side Nav -->
         <div class="collapse navbar-collapse justify-content-end pe-5 id="navbarNav">
           <ul class="navbar-nav">
@@ -74,22 +64,21 @@
     </div>
 
 
-   
+   <!-- Wrapper for all appended cards -->
     <div class="wrapper" class="col-sm-1 col-lg-5 container-fluid  col-xl-12""></div>
-   <button class="test-modal-btn btn btn-primary" data-bs-toggle="modal" data-bs-target="#modal-delete">Test Modal</button>
-    
-   
-   <div class="modal fade" id="modal-delete" tabindex="-999">
-    <div class="modal-dialog">
+
+    <!-- Delete Card Confirmation Modal -->
+   <div class="modal fade" id="modal-delete" tabindex="-1" role="dialog">
+    <div class="modal-dialog" role="document">
       <div class="modal-content">
-        <div class="modal-header">
-          <h5 class="modal-title">Title</h5>
-        <div class="modal-body">
-          <p>Lorem ipsum dolor sit amet.</p>
+        <h5 class="modal-title text-center p-3">Delete Card Confirmation</h5>
+        <div class="modal-body text-center">
+          <p>Are you sure you want to delete this card?</p>
         </div>
-        <div class="modal-footer">
-          <p>This is the footer</p>
-        </div>
+        <div class="modal-footer text-center">
+        <button class="btn btn-success confirm-delete-btn">Accept</button>
+        <button class="btn btn-danger cancel-delete-btn">Cancel</button>
+        <button class="btn btn-warning archive-delete-btn">Archive ( Deleted after 30 days )</button>
         </div>
       </div>
     </div>

@@ -4,7 +4,7 @@ var cards = [];
 
 class Card {
   constructor() {
-    const container = (this.container = $("<div id='card-container' class='card-hover sortable'></div>"));
+    const container = (this.container = $("<div id='card-container' class='sortable'></div>"));
     const head = (this.head = $("<div id='card-head'></div>"));
 
     //#region Title
@@ -22,7 +22,7 @@ class Card {
     const appendTaskInput = (this.input = $("<input id='card-input' placeholder='Enter Task' maxlength='14'></input>"));
     const taskItem = (this.taskItem = $(`<p id="task-item" ></p>`));
 
-    const deleteBtn = (this.deleteBtn = $('<button class="btn delete-btn" role="button">DETETETE</button'));
+    const deleteBtn = (this.deleteBtn = $('<button class="btn delete-btn" role="button" data-bs-toggle="modal" data-bs-target="#modal-delete"></button'));
     const deleteIcon = (this.deleteIcon = $('<i class="bi bi-x-lg delete-icon"></i>'));
 
     //#endregion
@@ -163,12 +163,24 @@ class Card {
 
     /* Delete Card */
     $(document).on("click", "#card-container .delete-btn", function () {
-      $(this).closest("#card-container").css({ transition: "transform 300ms cubic-bezier(0.445, 0.05, 0.55, 0.95)", transform: "scale(0)", outline: "none" });
-      $(this).closest("#card-container").removeClass("card-hover");
+      const target = $(this).closest("#card-container");
 
-      setTimeout(() => {
-        $(this).closest("#card-container").remove();
-      }, 500);
+      $("#delete-modal").modal("show");
+
+      $("#modal-delete .confirm-delete-btn").on("click", function () {
+        deleteCard(target);
+        $("#modal-delete").modal("hide");
+      });
+
+      $("#modal-delete .cancel-delete-btn").on("click", function () {
+        $("#modal-delete").modal("hide");
+        return;
+      });
+      $("#modal-delete .archive-delete-btn").on("click", function () {
+        deleteCard(target);
+        console.log("Not yet implemented, will get deleted instead");
+        $("#modal-delete").modal("hide");
+      });
     });
 
     /* Item popover */
@@ -208,7 +220,7 @@ function drawGrid() {
   const gridSpacing = 15;
 
   canvas.width = 32;
-  canvas.height= 32;
+  canvas.height = 32;
 
   const offset = 4;
   const numDotsX = Math.floor(canvas.width / dotSize);
@@ -233,9 +245,12 @@ function drawGrid() {
 function about() {
   alert("Created by Sindre Gangeskar");
 }
-function getCards() {
-  console.clear();
-  cards.forEach((card) => {
-    console.log($(card.container));
-  });
+
+function deleteCard(target) {
+  $(target).closest("#card-container").css({ transition: "transform 300ms cubic-bezier(0.445, 0.05, 0.55, 0.95)", transform: "scale(0)", outline: "none" });
+/*   $(target).closest("#card-container").removeClass("card-hover"); */
+
+  setTimeout(() => {
+    $(target).closest("#card-container").remove();
+  }, 500);
 }
