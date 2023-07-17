@@ -163,23 +163,27 @@ class Card {
 
     /* Delete Card */
     $(document).on("click", "#card-container .delete-btn", function () {
-      const target = $(this).closest("#card-container");
+      let target = $(this).closest("#card-container");
 
       $("#delete-modal").modal("show");
 
+      /* Delete on confirmation */
       $("#modal-delete .confirm-delete-btn").on("click", function () {
         deleteCard(target);
         $("#modal-delete").modal("hide");
       });
-
+      /* Cancel deletion */
       $("#modal-delete .cancel-delete-btn").on("click", function () {
         $("#modal-delete").modal("hide");
+        target = null;
         return;
       });
+      /* Archive deletion */
       $("#modal-delete .archive-delete-btn").on("click", function () {
         deleteCard(target);
         console.log("Not yet implemented, will get deleted instead");
         $("#modal-delete").modal("hide");
+        return;
       });
     });
 
@@ -243,12 +247,33 @@ function drawGrid() {
   return dataURL;
 }
 function about() {
-  alert("Created by Sindre Gangeskar");
+  const modal = $("<div class='modal fade about-me'></div>");
+  const modalDialog = $("<div class='modal-dialog modal-dialog-centered' role='document'></div>");
+  const modalContent = $("<div class='modal-content'></div>");
+  const modalTitle = $("<div class='modal-title p-3'><h5>About</h5></div>");
+  const modalBody = $("<div class='modal-body'><p class='text-center'>Created by Sindre Gangeskar</p></div>");
+  const modalFooter = $("<div class='modal-footer'><button class='btn btn-success btn-confirm'>OK</button></div>")
+
+  if(document.querySelector(".about-me")){
+    $(".about-me").modal("show");
+  }
+  else{
+    $(modalDialog).appendTo($(modal));
+    $(modalContent).appendTo($(modalDialog));
+    $(modalTitle).appendTo($(modalContent));
+    $(modalBody).appendTo($(modalContent));
+    $(modalFooter).appendTo($(modalContent));
+    $(modal).appendTo("body");
+    $(modal).modal("show");
+  }
+
+  $(".btn-confirm").on('click', function(){
+    $(modal).modal("hide");
+  })
 }
 
 function deleteCard(target) {
   $(target).closest("#card-container").css({ transition: "transform 300ms cubic-bezier(0.445, 0.05, 0.55, 0.95)", transform: "scale(0)", outline: "none" });
-/*   $(target).closest("#card-container").removeClass("card-hover"); */
 
   setTimeout(() => {
     $(target).closest("#card-container").remove();

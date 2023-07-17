@@ -211,6 +211,7 @@ input {
   width: fit-content;
   height: fit-content;
   font-size: 1.125rem;
+  font-weight: 100;
   position: absolute;
   color: white;
   border: none;
