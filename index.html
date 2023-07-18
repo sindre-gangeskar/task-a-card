@@ -51,12 +51,12 @@
         </div>
 
         <div class="page-container position-relative text-center pe-5 ps-5 m-auto">
-          <ul class="pagination m-0 p-0  text-center align-content-center d-flex justify-content-center">
-            <a href="#" class="page-link link-dark">1</a>
-            <a href="#" class="page-link link-dark">2</a>
-            <a href="#" class="page-link link-dark">3</a>
-            <a href="#" class="page-link link-dark">4</a>
-            <a href="#" class="page-link link-dark">5</a>
+          <ul class="pagination m-0 p-0 text-center align-content-center d-flex justify-content-center">
+            <button class="btn group-1-toggle page-link link-dark page-item">1</button>
+            <button class="btn group-2-toggle page-link link-dark page-item">2</button>
+            <button class="btn group-3-toggle page-link link-dark page-item">3</button>
+            <button class="btn group-4-toggle page-link link-dark page-item">4</button>
+            <button class="btn group-5-toggle page-link link-dark page-item">5</button>
           </ul>
         </div>
       </nav>
@@ -76,7 +76,7 @@
         <div class="modal-footer text-center">
         <button class="btn btn-success confirm-delete-btn">Accept</button>
         <button class="btn btn-danger cancel-delete-btn">Cancel</button>
-        <button class="btn btn-warning archive-delete-btn">Archive ( Deleted after 30 days )</button>
+        <button class="btn btn-warning archive-delete-btn">Archive<strong> ( Deleted after 30 days )</estrong></button>
         </div>
       </div>
     </div>
@@ -88,8 +88,6 @@
 
     <script>
       $(document).ready(function () {
-
-
         $(document).on("focus", "#card-input, #card-title-input", function () {
           $(this).popover({
             title: "Submit",
@@ -104,12 +102,9 @@
           $(this).popover("hide");
         });
 
-
         var backgroundImage = drawGrid();
         $("body").css({"background-image":`url(${backgroundImage})`});
-        $("body").css({"background-repeat": "repeat"})
-/*         $("body").css({"background-size": "contain"}); */
-      
+        $("body").css({"background-repeat": "repeat"})      
         createCard();
       });
     </script>

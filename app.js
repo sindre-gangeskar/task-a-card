@@ -1,6 +1,5 @@
 /// <reference types="jquery" />
-
-var cards = [];
+let groups = [[], [], [], [], []];
 
 class Card {
   constructor() {
@@ -25,10 +24,6 @@ class Card {
     const deleteBtn = (this.deleteBtn = $('<button class="btn delete-btn" role="button" data-bs-toggle="modal" data-bs-target="#modal-delete"></button'));
     const deleteIcon = (this.deleteIcon = $('<i class="bi bi-x-lg delete-icon"></i>'));
 
-    //#endregion
-
-    /* Add the elements to the object */
-    container.appendTo($(".wrapper"));
     head.appendTo(container);
     titleContainer.appendTo(head);
     titleInput.appendTo(titleContainer);
@@ -36,6 +31,17 @@ class Card {
     appendTaskInput.appendTo(container);
     deleteBtn.appendTo(head);
     deleteBtn.append(deleteIcon);
+
+    //#endregion
+
+    /* Pagination group functionality */
+    if (checkGroups(groups) == false) {
+      /* Add the elements to the object */
+      container.appendTo($(".wrapper"));
+      addCardToGroup(container);
+    } else if (checkGroups(groups) == true) {
+      return;
+    }
 
     $(".wrapper").sortable({
       placeholder: "marker",
@@ -203,7 +209,7 @@ class Card {
         element.popover("toggle");
       });
     });
-    cards.push($(this));
+
   }
 }
 
@@ -252,12 +258,11 @@ function about() {
   const modalContent = $("<div class='modal-content'></div>");
   const modalTitle = $("<div class='modal-title p-3'><h5>About</h5></div>");
   const modalBody = $("<div class='modal-body'><p class='text-center'>Created by Sindre Gangeskar</p></div>");
-  const modalFooter = $("<div class='modal-footer'><button class='btn btn-success btn-confirm'>OK</button></div>")
+  const modalFooter = $("<div class='modal-footer'><button class='btn btn-success btn-confirm'>OK</button></div>");
 
-  if(document.querySelector(".about-me")){
+  if (document.querySelector(".about-me")) {
     $(".about-me").modal("show");
-  }
-  else{
+  } else {
     $(modalDialog).appendTo($(modal));
     $(modalContent).appendTo($(modalDialog));
     $(modalTitle).appendTo($(modalContent));
@@ -267,11 +272,10 @@ function about() {
     $(modal).modal("show");
   }
 
-  $(".btn-confirm").on('click', function(){
+  $(".btn-confirm").on("click", function () {
     $(modal).modal("hide");
-  })
+  });
 }
-
 function deleteCard(target) {
   $(target).closest("#card-container").css({ transition: "transform 300ms cubic-bezier(0.445, 0.05, 0.55, 0.95)", transform: "scale(0)", outline: "none" });
 
@@ -279,3 +283,62 @@ function deleteCard(target) {
     $(target).closest("#card-container").remove();
   }, 500);
 }
+
+function checkGroups(groups) {
+  for (let groupIndex = 0; groupIndex < groups.length; groupIndex++) {
+    if (groups[groupIndex].length > 6) {
+      console.log("All groups are full");
+      return true;
+    } else return false;
+  }
+}
+
+function addCardToGroup(container) {
+  for (let groupIndex = 0; groupIndex < groups.length; groupIndex++) {
+    if (groups[groupIndex].length < 6) {
+      groups[groupIndex].push(container);
+      $(container).addClass(`group-${groupIndex + 1}`);
+      console.log(groupIndex);
+      break;
+    }
+  }
+}
+$(document).ready(function () {
+
+  $(`.group-1-toggle`).click();
+  $(".group-1-toggle").click(function () {
+    $(".group-1").show();
+    $(".group-2").hide();
+    $(".group-3").hide();
+    $(".group-4").hide();
+    $(".group-5").hide();
+  });
+  $(".group-2-toggle").click(function () {
+    $(".group-2").show();
+    $(".group-1").hide();
+    $(".group-3").hide();
+    $(".group-4").hide();
+    $(".group-5").hide();
+  });
+  $(".group-3-toggle").click(function () {
+    $(".group-3").show();
+    $(".group-1").hide();
+    $(".group-2").hide();
+    $(".group-4").hide();
+    $(".group-5").hide();
+  });
+  $(".group-4-toggle").click(function () {
+    $(".group-4").show();
+    $(".group-1").hide();
+    $(".group-3").hide();
+    $(".group-2").hide();
+    $(".group-5").hide();
+  });
+  $(".group-5-toggle").click(function () {
+    $(".group-5").show();
+    $(".group-1").hide();
+    $(".group-3").hide();
+    $(".group-4").hide();
+    $(".group-5").hide();
+  });
+});
