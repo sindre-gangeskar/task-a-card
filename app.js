@@ -306,7 +306,6 @@ $(document).ready(function () {
 
   $("#add-card").on("click", function () {
     addCardToGroup();
-
   });
 
   $(".group-1-toggle").click(function () {
