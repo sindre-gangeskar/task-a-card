@@ -33,7 +33,7 @@
          
          <div class="create-card-container d-flex">
            <label for="" class="p-2 navbar-collapse collapse">Create card</label>
-           <button class="nav-item btn text-white m-auto" id="add-card" onclick="createCard()">
+           <button class="nav-item btn text-white m-auto" id="add-card">
              +
            </button>  
          </div>
@@ -46,6 +46,9 @@
             </li>
             <li class="nav-item">
               <a href="#" class="nav-link">Contact</a>
+            </li>
+            <li class="nav-item">
+              <button class="confirm-alarm-btn btn btn-success" role="button" data-bs-target="#modal-alarm" data-bs-toggle="modal">Test Alarm Modal</button>
             </li>
           </ul>
         </div>
@@ -65,23 +68,39 @@
    <!-- Wrapper for all appended cards -->
     <div class="wrapper" class="col-sm-1 col-lg-5 container-fluid col-xl-12 hide"></div>
 
-    <!-- Delete Card Confirmation Modal -->
-   <div class="modal fade" id="modal-delete" tabindex="-1" role="dialog" data-bs-backdrop="static">
-    <div class="modal-dialog modal-dialog-centered" role="document">
-      <div class="modal-content">
-        <h5 class="modal-title text-center p-3">Delete Card Confirmation</h5>
-        <div class="modal-body text-center">
-          <p>Are you sure you want to delete this card?</p>
-        </div>
-        <div class="modal-footer text-center">
-        <button class="btn btn-success confirm-delete-btn">Accept</button>
-        <button class="btn btn-danger cancel-delete-btn">Cancel</button>
-        <button class="btn btn-warning archive-delete-btn">Archive<strong> ( Deleted after 30 days )</estrong></button>
+    <!-- Groups Full Alert Modal -->
+    <div class="modal fade" id="modal-alarm" tabindex="1" role="dialog" data-bs-backdrop="static">
+      <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+          <div class="modal-title p-3">
+            <h5 class="text-danger">All groups are full</h5>
+          </div>
+          <div class="modal-body text-center">
+            <p>It seems that all groups are full, please delete cards to free up some space and try again</p>
+          </div>
+          <div class="modal-footer">
+            <button class="confirm-alarm btn btn-success" data-bs-dismiss="modal">OK</button>
+          </div>
         </div>
       </div>
     </div>
-  </div>
-   
+
+    <!-- Delete Card Confirmation Modal -->
+    <div class="modal fade" id="modal-delete" tabindex="-1" role="dialog" data-bs-backdrop="static">
+      <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+          <h5 class="modal-title text-center p-3">Delete Card Confirmation</h5>
+          <div class="modal-body text-center">
+            <p>Are you sure you want to delete this card?</p>
+          </div>
+          <div class="modal-footer text-center">
+          <button class="btn btn-success confirm-delete-btn">Accept</button>
+          <button class="btn btn-danger cancel-delete-btn">Cancel</button>
+          <button class="btn btn-warning archive-delete-btn">Archive<strong> ( Deleted after 30 days )</estrong></button>
+          </div>
+        </div>
+      </div>
+    </div>
    
    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js" integrity="sha384-geWF76RCwLtnZ8qwWowPQNguL3RmwHVBC9FhGdlKrxdiJJigb/j/68SIy3Te4Bkz" crossorigin="anonymous"></script>
     <script src="app.js"></script>
@@ -105,7 +124,7 @@
         var backgroundImage = drawGrid();
         $("body").css({"background-image":`url(${backgroundImage})`});
         $("body").css({"background-repeat": "repeat"})      
-        createCard();
+       addCardToGroup();
       });
     </script>
   </body>

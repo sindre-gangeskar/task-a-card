@@ -1,5 +1,5 @@
 /// <reference types="jquery" />
-let groups = [[], [], [], [], []];
+var groups = [[], [], [], [], []];
 
 class Card {
   constructor() {
@@ -31,17 +31,8 @@ class Card {
     appendTaskInput.appendTo(container);
     deleteBtn.appendTo(head);
     deleteBtn.append(deleteIcon);
-
+    container.appendTo($(".wrapper"));
     //#endregion
-
-    /* Pagination group functionality */
-    if (checkGroups(groups) == false) {
-      /* Add the elements to the object */
-      container.appendTo($(".wrapper"));
-      addCardToGroup(container);
-    } else if (checkGroups(groups) == true) {
-      return;
-    }
 
     $(".wrapper").sortable({
       placeholder: "marker",
@@ -209,7 +200,6 @@ class Card {
         element.popover("toggle");
       });
     });
-
   }
 }
 
@@ -220,6 +210,7 @@ function createCard() {
   setTimeout(() => {
     $(card.container).css("transform", "scale(1)");
   }, 300);
+  return card.container;
 }
 function drawGrid() {
   const canvas = document.querySelector("canvas");
@@ -283,29 +274,41 @@ function deleteCard(target) {
     $(target).closest("#card-container").remove();
   }, 500);
 }
-
 function checkGroups(groups) {
   for (let groupIndex = 0; groupIndex < groups.length; groupIndex++) {
-    if (groups[groupIndex].length > 8) {
-      console.log("All groups are full");
+    if (groups[4].length >= 8) {
+      $("#modal-alarm").modal("show");
       return true;
-    } else return false;
+    }
   }
-}
+  return false;
 
-function addCardToGroup(container) {
+}
+function addCardToGroup() {
+  if (checkGroups(groups)) {
+    return;
+  }
+
+  let card = createCard();
+
   for (let groupIndex = 0; groupIndex < groups.length; groupIndex++) {
     if (groups[groupIndex].length < 8) {
-      groups[groupIndex].push(container);
-      $(container).addClass(`group-${groupIndex + 1}`);
+      $(card).addClass(`group-${groupIndex + 1}`);
+      groups[groupIndex].push(card);
+      $(`.group-${groupIndex + 1}-toggle`).click();
+      $(`.group-${groupIndex + 1}-toggle`).focus();
       console.log(groupIndex);
-      break;
+      return;
     }
   }
 }
 $(document).ready(function () {
 
-  $(`.group-1-toggle`).click();
+  $("#add-card").on("click", function () {
+    addCardToGroup();
+
+  });
+
   $(".group-1-toggle").click(function () {
     $(".group-1").show();
     $(".group-2").hide();
@@ -330,15 +333,15 @@ $(document).ready(function () {
   $(".group-4-toggle").click(function () {
     $(".group-4").show();
     $(".group-1").hide();
-    $(".group-3").hide();
     $(".group-2").hide();
+    $(".group-3").hide();
     $(".group-5").hide();
   });
   $(".group-5-toggle").click(function () {
     $(".group-5").show();
     $(".group-1").hide();
+    $(".group-2").hide();
     $(".group-3").hide();
     $(".group-4").hide();
-    $(".group-5").hide();
   });
 });
