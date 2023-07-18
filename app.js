@@ -286,7 +286,7 @@ function deleteCard(target) {
 
 function checkGroups(groups) {
   for (let groupIndex = 0; groupIndex < groups.length; groupIndex++) {
-    if (groups[groupIndex].length > 6) {
+    if (groups[groupIndex].length > 8) {
       console.log("All groups are full");
       return true;
     } else return false;
@@ -295,7 +295,7 @@ function checkGroups(groups) {
 
 function addCardToGroup(container) {
   for (let groupIndex = 0; groupIndex < groups.length; groupIndex++) {
-    if (groups[groupIndex].length < 6) {
+    if (groups[groupIndex].length < 8) {
       groups[groupIndex].push(container);
       $(container).addClass(`group-${groupIndex + 1}`);
       console.log(groupIndex);
