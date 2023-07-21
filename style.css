@@ -15,6 +15,7 @@
   place-content: center;
 }
 body {
+  z-index: -999;
   background-color: var(--theme-bg-color);
 }
 
@@ -55,6 +56,65 @@ body {
   scale: 105%;
   background-color: var(--theme-fg-color);
 }
+.details-btn {
+  top: -50%;
+  left: 0%;
+  background: none;
+  position: inherit;
+  text-align: center;
+  z-index: 1;
+  font-size: 1rem;
+  width: 40px;
+  height: 40px;
+  color: white;
+  transition: 300ms cubic-bezier(0.19, 1, 0.22, 1);
+  border: none !important;
+  outline: none !important;
+  font-weight: bolder;
+}
+
+.details-btn:hover {
+  color: orange;
+}
+.details-btn:active {
+  color: var(--theme-highlight-color) !important;
+}
+.modalDetailsTextArea {
+  background-color: #e4e4e4;
+  outline: none;
+  border: none;
+  border-radius: 0.5rem;
+  font-size: 1.25rem;
+  word-wrap: break-word;
+  color: black;
+  scroll-behavior: smooth;
+  padding: 40px !important;
+  height:50vh !important;
+  resize: none !important;
+}
+.modalDetailsTextArea::-webkit-resizer {
+  display: none;
+}
+
+.modalDetailsTextArea::-webkit-scrollbar {
+  width: 5px;
+  
+  background-color: #e4e4e4;
+}
+
+.modalDetailsTextArea::-webkit-scrollbar-thumb {
+  background-color: rgba(155, 155, 155, 0.267);
+}
+.modal-resize {
+  position: relative;
+  pointer-events: none;
+  bottom: 80px;
+  right: 10px;
+  rotate: 90deg;
+  position: absolute;
+  font-size: 20px !important;
+}
+
 #brand-card-01 {
   position: relative;
   margin: 5px auto;
@@ -90,7 +150,8 @@ body {
   border: 3px solid var(--theme-container-color);
   user-select: none;
 }
-#card-container:hover {
+#card-container:hover,
+.details-btn {
   scale: 110%;
   outline: 1px solid var(--theme-highlight-color);
   outline-style: ridge;
