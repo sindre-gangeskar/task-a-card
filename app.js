@@ -58,7 +58,6 @@ class Card {
     $(detailsBtn)
       .closest(".details-btn")
       .on("click", function () {
-        console.log("asdassads");
         $(detailsModal).modal("show");
       });
 
