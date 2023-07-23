@@ -56,11 +56,15 @@ body {
   background-color: var(--theme-fg-color);
 }
 .details-btn {
-  letter-spacing: 3px;
-  top: -50%;
+  display: grid;
+  margin: 2px auto;
+  justify-content: center;
+  align-items: center;
+  letter-spacing: 2px;
+  top: -60%;
   left: 0%;
   background: none;
-  position: inherit;
+  position: absolute;
   text-align: center;
   z-index: 1;
   font-size: 1rem;
@@ -74,6 +78,7 @@ body {
 }
 .details-btn:hover {
   color: orange;
+  letter-spacing: 3px;
 }
 .details-btn:active {
   color: var(--theme-highlight-color) !important;
@@ -238,11 +243,11 @@ input {
   outline-offset: -1px;
   font-weight: 200;
   border: none;
-  opacity: 0.75;
+  opacity: 0.95;
 }
 .popover-body {
   padding: 10px;
-  margin: 0;
+  margin: 0 auto;
   font-size: 0.75rem;
   color: white;
   background-color: var(--theme-bg-color);
@@ -252,12 +257,16 @@ input {
   font-size: 0.8rem;
 }
 .delete-btn {
-  padding: 0;
+  z-index: 999;
+  text-align: center;
+  justify-content: center;
+  margin: 2px auto;
+  display: grid;
   top: -15px;
   right: 5px;
-  width: fit-content;
-  height: fit-content;
-  font-size: 1.125rem;
+  width: 15px;
+  height: 15px;
+  font-size: 1.25rem;
   font-weight: 100;
   position: absolute;
   color: white;
@@ -266,6 +275,7 @@ input {
 .delete-btn:hover {
   color: red;
   border: none;
+  scale: 120%;;
 }
 @media (max-width: 992px) {
   .wrapper {

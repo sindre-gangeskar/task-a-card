@@ -3,31 +3,39 @@ var groups = [[], [], [], [], []];
 
 class Card {
   constructor() {
+    /* Card elements */ 
+    
     const container = (this.container = $("<div id='card-container' class='sortable'></div>"));
     const head = (this.head = $("<div id='card-head'></div>"));
-
-    //#region Title
-    /* Title Component */
     const titleContainer = (this.titlecontainer = $('<div id="card-title-container"></div>'));
-
-    const title = (this.title = $(`<p id='card-title'"></p>`));
-    const titleInput = (this.titleInput = $("<input id='card-title-input' placeholder='Enter Title Here' contenteditable='true' maxlength='10'></input>"));
-    //#endregion
-
-    //#region Task Component
-
-    /* Card elements */
+    const title = (this.title = $(`<p id='card-title'"></p>`)).popover({ title: "Click", content: "Click to edit", placement: "right", offset: "0, 40px", trigger: "hover" });
+    const titleInput = (this.titleInput = $("<input id='card-title-input' placeholder='Enter Title Here' contenteditable='true' maxlength='10' autocomplete='off'></input>")).popover({
+      title: "Submit",
+      content: "Press Enter to submit.",
+      placement: "right",
+      offset: "0px, 10px",
+      trigger: "focus",
+    });
     const content = (this.content = $("<div id='card-content' title='Hold to drag'></div>"));
     const taskContainer = (this.taskContainer = $("<div id='card-task-container'></div>"));
-    const appendTaskInput = (this.input = $("<input id='card-input' placeholder='Enter Task' maxlength='14'></input>"));
-    const taskItem = (this.taskItem = $(`<p id="task-item" ></p>`));
-    const detailsBtn = $((this.detailsBtn = $("<button class='details-btn'>...</button>"))).popover({
+    const taskInput = (this.taskInput = $("<input id='card-input' placeholder='Enter Task' maxlength='14' autocomplete='off'></input>")).popover({
+      title: "Submit",
+      content: "Press Enter to submit.",
+      placement: "right",
+      offset: "0px, 10px",
+      trigger: "focus",
+
+    });
+    const taskItem = (this.taskItem = $(`<p id="task-item" ></p>`)).popover({trigger:"hover", title:"Click",  content:"Click to edit task", placement:"right"});
+    const detailsBtn = $(this.detailsBtn = $("<button class='details-btn'>...</button>")).popover({
+      trigger: "hover",
+      offset: "0px, 15px",
+      container: $(this.detailsBtn),
       title: "More Info",
       content: "Click to add additional information",
-      placement: "top",
-      offset: "0px, 10px",
+      placement: "left",
     });
-    const deleteBtn = (this.deleteBtn = $('<button class="btn delete-btn" role="button" data-bs-toggle="modal" data-bs-target="#modal-delete"></button'));
+    const deleteBtn = (this.deleteBtn = $('<button class="btn delete-btn" role="button" data-bs-toggle="modal" data-bs-target="#modal-delete"></button')).popover({content:"Delete card", trigger:"hover", container:this.deleteBtn});
     const deleteIcon = (this.deleteIcon = $('<i class="bi bi-x delete-icon"></i>'));
 
     /* Details modal */
@@ -45,7 +53,7 @@ class Card {
     titleInput.appendTo(titleContainer);
     detailsBtn.appendTo(head);
     content.appendTo(container);
-    appendTaskInput.appendTo(container);
+    taskInput.appendTo(container);
     deleteBtn.appendTo(head);
     deleteBtn.append(deleteIcon);
     container.appendTo($(".wrapper"));
@@ -60,32 +68,13 @@ class Card {
     detailsModalFooter.appendTo(detailsModalContent);
     detailsModalTextArea.appendTo(detailsModalBody);
 
-    $(detailsBtn)
-      .closest(".details-btn")
-      .on("click", function () {
-        $(detailsModal).modal("show");
-      });
-
-    $(detailsBtn)
-      .closest(".details-btn")
-      .on("mouseenter", function () {
-        $(detailsBtn).closest(".details-btn").popover("show");
-      });
-    $(detailsBtn)
-      .closest(".details-btn")
-      .on("mouseleave", function () {
-        $(detailsBtn).closest(".details-btn").popover("hide");
-      });
-
-    $(".wrapper").sortable({
-      placeholder: "marker",
-      items: ".sortable",
-      tolerance: "pointer",
+    $(detailsBtn).on("click", function () {
+      $(detailsModal).modal("show");
     });
 
     /* Assign title input value */
     titleInput.on("keypress", (e) => {
-      if (e.key === "Enter") {
+      if (e.key === "Enter" && titleInput.val() !== "") {
         /* Title */
         if (titleInput.val() != "" && container.has("h2").length === 0) {
           $(this.head).append(this.title);
@@ -104,19 +93,19 @@ class Card {
     /* Task List & Task Input */
     let maxTasks = 5;
     let tasks = 0;
-    appendTaskInput.on("keypress", (e) => {
+    taskInput.on("keypress", (e) => {
       if (e.key === "Enter") {
-        if (this.input.val() != "") {
-          taskContainer.clone().append(taskItem.clone().text(this.input.val())).appendTo(content);
+        if (this.taskInput.val() != "") {
+          taskContainer.clone().append(taskItem.clone().text(this.taskInput.val())).appendTo(content);
 
-          appendTaskInput.blur();
-          appendTaskInput.val("");
+          taskInput.blur();
+          taskInput.val("");
           tasks++;
         }
 
         if (tasks >= maxTasks) {
-          this.input.blur();
-          this.input.hide();
+          this.taskInput.blur();
+          this.taskInput.hide();
           return;
         }
       }
@@ -134,25 +123,11 @@ class Card {
     container.on("click", "#task-item", (event) => {
       const container = $(event.target).closest("#card-task-container");
       const item = container.find("#task-item");
-      const editTask = $("<input placeholder='Edit Task Here' id='edit-task-input' maxlength='14'></input>").popover({
-        title: "Submit & Cancel",
-        content: "'Enter' to submit. \n 'Esc' to cancel edit.",
-        offset: "0px, 40px",
-      });
-
-      editTask.on("focus", () => {
-        editTask.popover("show");
-      });
-
-      editTask.on("blur", () => {
-        editTask.popover("hide");
-      });
-
+      const editTask = $("<input placeholder='Edit Task Here' id='edit-task-input' maxlength='14'></input>").popover({title:"Submit", content:"Press enter to submit edit of task", trigger:"focus", container:$(this.container), offset:"0px, 40px"});
       /* Check if the container has an item, if it does, execute code */
       if (item.length > 0) {
         item.hide();
         editTask.val(item.text());
-
         /* If the item doesn't have an item of #edit-task-input, append one */
         if (item.siblings("#edit-task-input").length === 0) {
           container.append(editTask);
@@ -165,7 +140,6 @@ class Card {
           input.focus();
           input.select();
         }
-
         /* Edit Task */
         editTask.on("keydown", (e) => {
           if (e.key === "Enter" && editTask.val() != "") {
@@ -182,66 +156,6 @@ class Card {
           }
         });
       }
-    });
-
-    /* Title popover */
-    $(document).on("mouseenter", "#card-title", function () {
-      let element = $(this);
-
-      element.popover({
-        title: "Click",
-        content: "Click to edit",
-        placement: "right",
-        offset: "0, 40px",
-      });
-      element.popover("toggle");
-
-      element.on("mouseleave", function () {
-        element.popover("toggle");
-      });
-    });
-
-    /* Delete Card */
-    $(document).on("click", "#card-container .delete-btn", function () {
-      let target = $(this).closest("#card-container");
-
-      $("#delete-modal").modal("show");
-
-      /* Delete on confirmation */
-      $("#modal-delete .confirm-delete-btn").on("click", function () {
-        deleteCard(target);
-        $("#modal-delete").modal("hide");
-      });
-      /* Cancel deletion */
-      $("#modal-delete .cancel-delete-btn").on("click", function () {
-        $("#modal-delete").modal("hide");
-        target = null;
-        return;
-      });
-      /* Archive deletion */
-      $("#modal-delete .archive-delete-btn").on("click", function () {
-        deleteCard(target);
-        console.log("Not yet implemented, will get deleted instead");
-        $("#modal-delete").modal("hide");
-        return;
-      });
-    });
-
-    /* Item popover */
-    $(document).on("mouseenter", "#task-item", function () {
-      let element = $(this);
-
-      element.popover({
-        title: "Click",
-        content: "Click to edit",
-        placement: "right",
-        offset: "0, 40px",
-      });
-      element.popover("toggle");
-
-      element.on("mouseleave", function () {
-        element.popover("toggle");
-      });
     });
   }
 }
@@ -311,10 +225,11 @@ function about() {
   });
 }
 function deleteCard(target) {
-  $(target).closest("#card-container").css({ transition: "transform 300ms cubic-bezier(0.445, 0.05, 0.55, 0.95)", transform: "scale(0)", outline: "none" });
+  const cardContainer = $(target).closest("#card-container");
+  cardContainer.css({ transition: "transform 300ms cubic-bezier(0.445, 0.05, 0.55, 0.95)", transform: "scale(0)", outline: "none" });
 
   setTimeout(() => {
-    $(target).closest("#card-container").remove();
+    cardContainer.remove();
   }, 500);
 }
 function checkGroups(groups) {
@@ -339,16 +254,21 @@ function addCardToGroup() {
       groups[groupIndex].push(card);
       $(`.group-${groupIndex + 1}-toggle`).click();
       $(`.group-${groupIndex + 1}-toggle`).focus();
-      console.log(groupIndex);
+      $(`.group-${groupIndex + 1}`).show();
       return;
     }
   }
 }
 $(document).ready(function () {
+  $(".wrapper").sortable({
+    placeholder: "marker",
+    items: ".sortable",
+    tolerance: "pointer",
+  });
+
   $("#add-card").on("click", function () {
     addCardToGroup();
   });
-
   $(".group-1-toggle").click(function () {
     $(".group-1").show();
     $(".group-2").hide();
@@ -383,5 +303,31 @@ $(document).ready(function () {
     $(".group-2").hide();
     $(".group-3").hide();
     $(".group-4").hide();
+  });
+
+  /* Delete Card */
+  $(document).on("click", "#card-container .delete-btn", function () {
+    let target = $(this).closest("#card-container");
+
+    $("#delete-modal").modal("show");
+
+    /* Delete on confirmation */
+    $("#modal-delete .confirm-delete-btn").on("click", function () {
+      deleteCard(target);
+      $("#modal-delete").modal("hide");
+    });
+    /* Cancel deletion */
+    $("#modal-delete .cancel-delete-btn").on("click", function () {
+      $("#modal-delete").modal("hide");
+      target = null;
+      return;
+    });
+    /* Archive deletion */
+    $("#modal-delete .archive-delete-btn").on("click", function () {
+      deleteCard(target);
+      console.log("Not yet implemented, will get deleted instead");
+      $("#modal-delete").modal("hide");
+      return;
+    });
   });
 });

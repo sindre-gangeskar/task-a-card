@@ -11,12 +11,13 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" />
     <link rel="stylesheet" href="style.css" />
     <title>Task A Card</title>
+
   </head>
   <body>
     <canvas id="canvas" class="canvas" hidden="true"></canvas>
     <div class="top-nav sticky-top position-fixed col-lg-3 col-md-2 col-sm-1 mb-0">
       <nav class="navbar navbar-expand-md navbar-light bg-light fs-5 container-fluid w-100">
-        <!-- Left-side Nav -->
+        <!-- * Left-side Nav -->
         <div class="logo d-flex justify-content-center align-content-center ps-5">
             <svg id="brand-card-01" width="40" height="60">
               <rect id="card-01" x="0" y="0" rx="0.5rem" width="40" height="60"></rect>
@@ -27,7 +28,7 @@
             <a href="#" class="navbar-brand fs-1 ms-5">Task a card </a>
           </a>
         </div>   
-        <!-- Center Nav -->
+        <!-- * Center Nav -->
         <div class="navbar-collapse">
           <p class="fw-light m-auto navbar-collapse collapse">Simple and easy to use to-do application</p>
          
@@ -38,7 +39,7 @@
            </button>  
          </div>
         </div>
-        <!-- Right-side Nav -->
+        <!-- * Right-side Nav -->
         <div class="collapse navbar-collapse justify-content-end pe-5 id="navbarNav">
           <div class="page-container position-relative text-center pe-5 ps-5 m-auto">
             <ul class="pagination m-0 p-0 text-center align-content-center d-flex justify-content-center">
@@ -104,24 +105,11 @@
 
     <script>
       $(document).ready(function () {
-        $(document).on("focus", "#card-input, #card-title-input", function () {
-          $(this).popover({
-            title: "Submit",
-            content: "Press Enter to submit.",
-            placement: "right",
-            offset: "0px, 10px",
-          });
-          $(this).popover("show");
-        });
-
-        $(document).on("blur", "input", function () {
-          $(this).popover("hide");
-        });
-
         var backgroundImage = drawGrid();
         $("body").css({"background-image":`url(${backgroundImage})`});
         $("body").css({"background-repeat": "repeat"})      
-       addCardToGroup();
+      
+        addCardToGroup();
       });
     </script>
   </body>
