@@ -15,13 +15,18 @@ class Card {
     //#endregion
 
     //#region Task Component
-    
+
     /* Card elements */
     const content = (this.content = $("<div id='card-content' title='Hold to drag'></div>"));
     const taskContainer = (this.taskContainer = $("<div id='card-task-container'></div>"));
     const appendTaskInput = (this.input = $("<input id='card-input' placeholder='Enter Task' maxlength='14'></input>"));
     const taskItem = (this.taskItem = $(`<p id="task-item" ></p>`));
-    const detailsBtn = $((this.detailsBtn = $("<button class='details-btn'>. . .</button>")));
+    const detailsBtn = $((this.detailsBtn = $("<button class='details-btn'>...</button>"))).popover({
+      title: "More Info",
+      content: "Click to add additional information",
+      placement: "top",
+      offset: "0px, 10px",
+    });
     const deleteBtn = (this.deleteBtn = $('<button class="btn delete-btn" role="button" data-bs-toggle="modal" data-bs-target="#modal-delete"></button'));
     const deleteIcon = (this.deleteIcon = $('<i class="bi bi-x delete-icon"></i>'));
 
@@ -32,7 +37,7 @@ class Card {
     const detailsModalTitle = $((this.detailsModalTitle = $("<div class='modal-title p-3'><h5>Additional Information</h5></div>")));
     const detailsModalBody = $((this.detailsModalBody = $("<div class='modal-body text-center'></div>")));
     const detailsModalFooter = $((this.detailsModalFooter = $("<div class='modal-footer'><button class='btn btn-success' data-bs-dismiss='modal'>Save & Close</button></div>")));
-    const detailsModalTextArea = $((this.detailsModalTextArea = $("<textarea class='modalDetailsTextArea container-fluid w-100 p-3' placeholder='Enter additional information here' spellcheck='false'></textarea>")));
+    const detailsModalTextArea = $((this.detailsModalTextArea = $("<textarea class='modalDetailsTextArea container-fluid w-100 p-3' placeholder='Enter additional information here\n(Max 480 characters)' maxlength='480' rows='5' cols='5' max-rows='10' spellcheck='false'></textarea>")));
 
     /* Card Container Appends */
     head.appendTo(container);
@@ -59,6 +64,17 @@ class Card {
       .closest(".details-btn")
       .on("click", function () {
         $(detailsModal).modal("show");
+      });
+
+    $(detailsBtn)
+      .closest(".details-btn")
+      .on("mouseenter", function () {
+        $(detailsBtn).closest(".details-btn").popover("show");
+      });
+    $(detailsBtn)
+      .closest(".details-btn")
+      .on("mouseleave", function () {
+        $(detailsBtn).closest(".details-btn").popover("hide");
       });
 
     $(".wrapper").sortable({

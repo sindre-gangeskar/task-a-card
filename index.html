@@ -40,6 +40,15 @@
         </div>
         <!-- Right-side Nav -->
         <div class="collapse navbar-collapse justify-content-end pe-5 id="navbarNav">
+          <div class="page-container position-relative text-center pe-5 ps-5 m-auto">
+            <ul class="pagination m-0 p-0 text-center align-content-center d-flex justify-content-center">
+              <button class="btn group-1-toggle page-link link-dark page-item">1</button>
+              <button class="btn group-2-toggle page-link link-dark page-item">2</button>
+              <button class="btn group-3-toggle page-link link-dark page-item">3</button>
+              <button class="btn group-4-toggle page-link link-dark page-item">4</button>
+              <button class="btn group-5-toggle page-link link-dark page-item">5</button>
+            </ul>
+          </div>
           <ul class="navbar-nav">
             <li>
               <a href="#" class="nav-link" onclick="about()" role="">About</a>
@@ -50,20 +59,11 @@
           </ul>
         </div>
 
-        <div class="page-container position-relative text-center pe-5 ps-5 m-auto">
-          <ul class="pagination m-0 p-0 text-center align-content-center d-flex justify-content-center">
-            <button class="btn group-1-toggle page-link link-dark page-item">1</button>
-            <button class="btn group-2-toggle page-link link-dark page-item">2</button>
-            <button class="btn group-3-toggle page-link link-dark page-item">3</button>
-            <button class="btn group-4-toggle page-link link-dark page-item">4</button>
-            <button class="btn group-5-toggle page-link link-dark page-item">5</button>
-          </ul>
-        </div>
       </nav>
     </div>
 
    <!-- Wrapper for all appended cards -->
-    <div class="wrapper row container-fluid w-100 h-100 position-absolute"></div> <!-- col-12 col-lg-6 col-md-3 col-sm-1 -->
+    <div class="wrapper w-100 h-100"></div> <!-- col-12 col-lg-6 col-md-3 col-sm-1 -->
 
     <!-- Groups Full Alert Modal -->
     <div class="modal fade" id="modal-alarm" tabindex="1" role="dialog" data-bs-backdrop="static">
@@ -109,7 +109,7 @@
             title: "Submit",
             content: "Press Enter to submit.",
             placement: "right",
-            offset: "0px, 40px",
+            offset: "0px, 10px",
           });
           $(this).popover("show");
         });
