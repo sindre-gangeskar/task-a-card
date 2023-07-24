@@ -12,17 +12,19 @@ class Card {
       container: this.container,
       placement: "top",
       offset: "0px, 50px",
+      delay: { show: 1500 },
     });
     const head = (this.head = $("<div id='card-head'></div>"));
     const titleContainer = (this.titlecontainer = $('<div id="card-title-container"></div>'));
-    const title = (this.title = $(`<p id='card-title'"></p>`)).popover({ title: "Click", content: "Click to edit title", placement: "right", offset: "0px, 20px", trigger: "hover", container: this.title });
+    const title = (this.title = $(`<p id='card-title'"></p>`)).popover({ title: "Click", content: "Click to edit title", placement: "right", offset: "0px, 20px", trigger: "hover", container: this.title, delay: { show: 500 } });
     const titleInput = (this.titleInput = $("<input id='card-title-input' placeholder='Enter Title Here' contenteditable='true' maxlength='10' autocomplete='off'></input>")).popover({
       title: "Submit",
       content: "Press Enter to submit.",
-      placement: "right",
-      offset: "0px, 10px",
+      placement: "left",
+      offset: "105px, -100px",
       trigger: "focus",
-      container: this.title,
+      container: this.container,
+      delay: { show: 500 },
     });
     const content = (this.content = $("<div id='card-content'></div>"));
     const taskContainer = (this.taskContainer = $("<div id='card-task-container'></div>"));
@@ -34,6 +36,7 @@ class Card {
       offset: "0px, 20px",
       trigger: "focus",
       container: taskInputContainer,
+      delay: { show: 500 },
     });
     const taskItem = (this.taskItem = $("<p id='task-item'></p>"));
     const detailsBtn = $((this.detailsBtn = $("<button class='details-btn'>...</button>"))).popover({
@@ -43,8 +46,9 @@ class Card {
       title: "More Info",
       content: "Click to add additional information",
       placement: "left",
+      delay: { show: 500 },
     });
-    const deleteBtn = (this.deleteBtn = $('<button class="btn delete-btn" role="button" data-bs-toggle="modal" data-bs-target="#modal-delete"></button')).popover({ content: "Delete card", trigger: "hover", container: this.deleteBtn });
+    const deleteBtn = (this.deleteBtn = $('<button class="btn delete-btn" role="button" data-bs-toggle="modal" data-bs-target="#modal-delete"></button')).popover({ content: "Delete card", trigger: "hover", container: this.deleteBtn, delay: { show: 500 } });
     const deleteIcon = (this.deleteIcon = $('<i class="bi bi-x delete-icon"></i>'));
 
     /* Details modal */
@@ -168,13 +172,6 @@ class Card {
       }
     });
 
-    /* Edit task popover functionality */
-    container.on("mouseenter", "#task-item", function () {
-      const item = $(this);
-      item.popover({ trigger: "hover", title: "Click", content: "Click to edit task", placement: "right", container: item.parent(), offset: "0px, 20px" });
-
-      item.popover("show");
-    });
   }
 }
 
