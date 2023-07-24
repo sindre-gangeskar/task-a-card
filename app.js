@@ -3,31 +3,40 @@ var groups = [[], [], [], [], []];
 
 class Card {
   constructor() {
-    /* Card elements */ 
-    
-    const container = (this.container = $("<div id='card-container' class='sortable'></div>"));
+    /* Card elements */
+
+    const container = (this.container = $("<div id='card-container' class='sortable'></div>")).popover({
+      title: "Drag & Sort",
+      content: "Drag and Drop: Hold left mouse button to drag cards. Sort cards by swapping positions to arrange as desired.",
+      trigger: "hover",
+      container: this.container,
+      placement: "top",
+      offset: "0px, 50px",
+    });
     const head = (this.head = $("<div id='card-head'></div>"));
     const titleContainer = (this.titlecontainer = $('<div id="card-title-container"></div>'));
-    const title = (this.title = $(`<p id='card-title'"></p>`)).popover({ title: "Click", content: "Click to edit", placement: "right", offset: "0, 40px", trigger: "hover" });
+    const title = (this.title = $(`<p id='card-title'"></p>`)).popover({ title: "Click", content: "Click to edit title", placement: "right", offset: "0px, 20px", trigger: "hover", container: this.title });
     const titleInput = (this.titleInput = $("<input id='card-title-input' placeholder='Enter Title Here' contenteditable='true' maxlength='10' autocomplete='off'></input>")).popover({
       title: "Submit",
       content: "Press Enter to submit.",
       placement: "right",
       offset: "0px, 10px",
       trigger: "focus",
+      container: this.title,
     });
-    const content = (this.content = $("<div id='card-content' title='Hold to drag'></div>"));
+    const content = (this.content = $("<div id='card-content'></div>"));
     const taskContainer = (this.taskContainer = $("<div id='card-task-container'></div>"));
+    const taskInputContainer = (this.taskInputContainer = $("<div id='task-input-container'></div>"));
     const taskInput = (this.taskInput = $("<input id='card-input' placeholder='Enter Task' maxlength='14' autocomplete='off'></input>")).popover({
       title: "Submit",
       content: "Press Enter to submit.",
       placement: "right",
-      offset: "0px, 10px",
+      offset: "0px, 20px",
       trigger: "focus",
-
+      container: taskInputContainer,
     });
-    const taskItem = (this.taskItem = $(`<p id="task-item" ></p>`)).popover({trigger:"hover", title:"Click",  content:"Click to edit task", placement:"right"});
-    const detailsBtn = $(this.detailsBtn = $("<button class='details-btn'>...</button>")).popover({
+    const taskItem = (this.taskItem = $("<p id='task-item'></p>"));
+    const detailsBtn = $((this.detailsBtn = $("<button class='details-btn'>...</button>"))).popover({
       trigger: "hover",
       offset: "0px, 15px",
       container: $(this.detailsBtn),
@@ -35,7 +44,7 @@ class Card {
       content: "Click to add additional information",
       placement: "left",
     });
-    const deleteBtn = (this.deleteBtn = $('<button class="btn delete-btn" role="button" data-bs-toggle="modal" data-bs-target="#modal-delete"></button')).popover({content:"Delete card", trigger:"hover", container:this.deleteBtn});
+    const deleteBtn = (this.deleteBtn = $('<button class="btn delete-btn" role="button" data-bs-toggle="modal" data-bs-target="#modal-delete"></button')).popover({ content: "Delete card", trigger: "hover", container: this.deleteBtn });
     const deleteIcon = (this.deleteIcon = $('<i class="bi bi-x delete-icon"></i>'));
 
     /* Details modal */
@@ -53,7 +62,8 @@ class Card {
     titleInput.appendTo(titleContainer);
     detailsBtn.appendTo(head);
     content.appendTo(container);
-    taskInput.appendTo(container);
+    taskInputContainer.appendTo(container);
+    taskInput.appendTo(taskInputContainer);
     deleteBtn.appendTo(head);
     deleteBtn.append(deleteIcon);
     container.appendTo($(".wrapper"));
@@ -123,7 +133,7 @@ class Card {
     container.on("click", "#task-item", (event) => {
       const container = $(event.target).closest("#card-task-container");
       const item = container.find("#task-item");
-      const editTask = $("<input placeholder='Edit Task Here' id='edit-task-input' maxlength='14'></input>").popover({title:"Submit", content:"Press enter to submit edit of task", trigger:"focus", container:$(this.container), offset:"0px, 40px"});
+      const editTask = $("<input placeholder='Edit Task Here' id='edit-task-input' maxlength='14'></input>").popover({ title: "Submit", content: "Press enter to submit edit of task", trigger: "focus", container: this.taskInputContainer, offset: "-30px, 20px" });
       /* Check if the container has an item, if it does, execute code */
       if (item.length > 0) {
         item.hide();
@@ -156,6 +166,14 @@ class Card {
           }
         });
       }
+    });
+
+    /* Edit task popover functionality */
+    container.on("mouseenter", "#task-item", function () {
+      const item = $(this);
+      item.popover({ trigger: "hover", title: "Click", content: "Click to edit task", placement: "right", container: item.parent(), offset: "0px, 20px" });
+
+      item.popover("show");
     });
   }
 }
