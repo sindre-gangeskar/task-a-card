@@ -5,7 +5,7 @@ class Card {
   constructor() {
     /* Card elements */
 
-    const container = (this.container = $("<div id='card-container' class='sortable'></div>")).popover({
+    const container = (this.container = $("<div id='card-container' class='sortable' data-bs-toggle='popover'></div>")).popover({
       title: "Drag & Sort",
       content: "Drag and Drop: Hold left mouse button to drag cards. Sort cards by swapping positions to arrange as desired.",
       trigger: "hover",
@@ -15,9 +15,10 @@ class Card {
       delay: { show: 1500 },
     });
     const head = (this.head = $("<div id='card-head'></div>"));
+    const groupID = $((this.groupID = $("<div class='text-center group-id'></div>")));
     const titleContainer = (this.titlecontainer = $('<div id="card-title-container"></div>'));
-    const title = (this.title = $(`<p id='card-title'"></p>`)).popover({ title: "Click", content: "Click to edit title", placement: "right", offset: "0px, 20px", trigger: "hover", container: this.title, delay: { show: 500 } });
-    const titleInput = (this.titleInput = $("<input id='card-title-input' placeholder='Enter Title Here' contenteditable='true' maxlength='10' autocomplete='off'></input>")).popover({
+    const title = (this.title = $(`<p id='card-title' data-bs-toggle='popover'"></p>`)).popover({ title: "Click", content: "Click to edit title", placement: "right", offset: "0px, 20px", trigger: "hover", container: this.title, delay: { show: 500 } });
+    const titleInput = (this.titleInput = $("<input id='card-title-input' placeholder='Enter Title Here' contenteditable='true' maxlength='10' autocomplete='off' data-bs-toggle='popover'></input>")).popover({
       title: "Submit",
       content: "Press Enter to submit.",
       placement: "left",
@@ -29,7 +30,7 @@ class Card {
     const content = (this.content = $("<div id='card-content'></div>"));
     const taskContainer = (this.taskContainer = $("<div id='card-task-container'></div>"));
     const taskInputContainer = (this.taskInputContainer = $("<div id='task-input-container'></div>"));
-    const taskInput = (this.taskInput = $("<input id='card-input' placeholder='Enter Task' maxlength='14' autocomplete='off'></input>")).popover({
+    const taskInput = (this.taskInput = $("<input id='card-input' placeholder='Enter Task' maxlength='14' autocomplete='off' data-bs-toggle='popover'></input>")).popover({
       title: "Submit",
       content: "Press Enter to submit.",
       placement: "right",
@@ -39,7 +40,7 @@ class Card {
       delay: { show: 500 },
     });
     const taskItem = (this.taskItem = $("<p id='task-item'></p>"));
-    const detailsBtn = $((this.detailsBtn = $("<button class='details-btn'>...</button>"))).popover({
+    const detailsBtn = $((this.detailsBtn = $("<button class='details-btn' data-bs-toggle='popover'>...</button>"))).popover({
       trigger: "hover",
       offset: "0px, 15px",
       container: $(this.detailsBtn),
@@ -48,7 +49,7 @@ class Card {
       placement: "left",
       delay: { show: 500 },
     });
-    const deleteBtn = (this.deleteBtn = $('<button class="btn delete-btn" role="button" data-bs-toggle="modal" data-bs-target="#modal-delete"></button')).popover({ content: "Delete card", trigger: "hover", container: this.deleteBtn, delay: { show: 500 } });
+    const deleteBtn = (this.deleteBtn = $("<button class='btn delete-btn' role='button' data-bs-toggle='modal' data-bs-target='#modal-delete'></button"));
     const deleteIcon = (this.deleteIcon = $('<i class="bi bi-x delete-icon"></i>'));
 
     /* Details modal */
@@ -62,6 +63,7 @@ class Card {
 
     /* Card Container Appends */
     head.appendTo(container);
+    groupID.appendTo(head);
     titleContainer.appendTo(head);
     titleInput.appendTo(titleContainer);
     detailsBtn.appendTo(head);
@@ -171,7 +173,6 @@ class Card {
         });
       }
     });
-
   }
 }
 
@@ -256,16 +257,20 @@ function checkGroups(groups) {
   }
   return false;
 }
-function addCardToGroup() {
+function addCardToGroup(groupVisiblity) {
   if (checkGroups(groups)) {
     return;
   }
-
   let card = createCard();
+  let groupID = $(card).find(".group-id");
+
+  if (groupVisiblity) groupID.show();
+  else groupID.hide();
 
   for (let groupIndex = 0; groupIndex < groups.length; groupIndex++) {
     if (groups[groupIndex].length < 8) {
       $(card).addClass(`group-${groupIndex + 1}`);
+      groupID.html(groupIndex + 1);
       groups[groupIndex].push(card);
       $(`.group-${groupIndex + 1}-toggle`).click();
       $(`.group-${groupIndex + 1}-toggle`).focus();
@@ -274,15 +279,50 @@ function addCardToGroup() {
     }
   }
 }
+function getGroupVisibility() {
+  const groupToggle = $(".group-visibility-switch");
+
+  function updateGroupVisibility(checked) {
+    if (checked) $(".group-id").show();
+    else $(".group-id").hide();
+  }
+
+  const initialVisibility = $(groupToggle).is(":checked");
+  updateGroupVisibility(initialVisibility);
+
+  /*Update on change */
+  groupToggle.on("change", function () {
+    const checked = $(this).is(":checked");
+    updateGroupVisibility(checked);
+  });
+
+  return initialVisibility;
+}
+function getTooltipsVisibility() {
+  const toggle = $(".tooltips-visibility-switch");
+
+  toggle.on("change", function () {
+    const checked = $(this).is(":checked");
+    updateTooltipsVisibility(checked);
+  });
+}
+
+function updateTooltipsVisibility(checked) {
+  if (checked) {
+    $('[data-bs-toggle="popover"]').popover("enable");
+  } else $('[data-bs-toggle="popover"]').popover("disable");
+}
+
 $(document).ready(function () {
+  getTooltipsVisibility();
+  getGroupVisibility();
   $(".wrapper").sortable({
     placeholder: "marker",
     items: ".sortable",
     tolerance: "pointer",
   });
-
   $("#add-card").on("click", function () {
-    addCardToGroup();
+    addCardToGroup(getGroupVisibility());
   });
   $(".group-1-toggle").click(function () {
     $(".group-1").show();

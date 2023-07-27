@@ -40,7 +40,15 @@
          </div>
         </div>
         <!-- * Right-side Nav -->
-        <div class="collapse navbar-collapse justify-content-end pe-5 id="navbarNav">
+        <div class="collapse navbar-collapse justify-content-end pe-5" id="navbarNav">
+ <div class="form-check form-switch  me-5 ms-5 start-100">
+  <label class="form-check-label">Toggle group visibility</label>
+  <input role="switch" class="form-check-input group-visibility-switch" type="checkbox" checked>
+  </div>
+ <div class="form-check form-switch me-5 ms-5 start-100">
+  <label class="form-check-label">Toggle tooltips</label>
+  <input role="switch" class="form-check-input tooltips-visibility-switch" type="checkbox" checked>
+  </div>
           <div class="page-container position-relative text-center pe-5 ps-5 m-auto">
             <ul class="pagination m-0 p-0 text-center align-content-center d-flex justify-content-center">
               <button class="btn group-1-toggle page-link link-dark page-item">1</button>
@@ -54,9 +62,6 @@
             <li>
               <a href="#" class="nav-link" onclick="about()" role="">About</a>
             </li>
-<!--             <li class="nav-item">
-              <a href="#" class="nav-link">Contact</a>
-            </li> -->
           </ul>
         </div>
 
@@ -108,8 +113,8 @@
         var backgroundImage = drawGrid();
         $("body").css({"background-image":`url(${backgroundImage})`});
         $("body").css({"background-repeat": "repeat"})      
-      
-        addCardToGroup();
+        const initialGroupVisibility = $(".group-visibility-switch").is(":checked");
+        addCardToGroup(initialGroupVisibility);
       });
     </script>
   </body>
