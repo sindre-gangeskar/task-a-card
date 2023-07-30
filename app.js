@@ -273,6 +273,7 @@ function addCardToGroup(groupVisiblity) {
       key = firstAvailableSlot;
     }
   }
+  else key = getFirstAvailableSlotInGroup();
 
   if (getAvailableSlotsInGroup(key, false) && key <= groups.length) {
     let card = createCard();
