@@ -403,31 +403,32 @@ $(document).ready(function () {
   });
   $("#add-card").on("click", function () {
     addCardToGroup(getGroupIndexVisibility());
+    getAvailableSlotsInGroup(key, true);
   });
   $(".group-1-toggle").click(function () {
     key = 0;
     toggleGroups(key);
-    getAvailableSlotsInGroup(key, true);
+    getAvailableSlotsInGroup(key, false);
   });
   $(".group-2-toggle").click(function () {
     key = 1;
     toggleGroups(key);
-    getAvailableSlotsInGroup(key, true);
+    getAvailableSlotsInGroup(key, false);
   });
   $(".group-3-toggle").click(function () {
     key = 2;
     toggleGroups(key);
-    getAvailableSlotsInGroup(key, true);
+    getAvailableSlotsInGroup(key, false);
   });
   $(".group-4-toggle").click(function () {
     key = 3;
     toggleGroups(key);
-    getAvailableSlotsInGroup(key, true);
+    getAvailableSlotsInGroup(key, false);
   });
   $(".group-5-toggle").click(function () {
     key = 4;
     toggleGroups(key);
-    getAvailableSlotsInGroup(key, true);
+    getAvailableSlotsInGroup(key, false);
   });
 
   /* Delete Card */
