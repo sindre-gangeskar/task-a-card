@@ -255,7 +255,7 @@ function deleteCard(target) {
 }
 function checkAllGroupsFull(groups) {
   for (let groupIndex = 0; groupIndex < groups.length; groupIndex++) {
-    if (groups[4].length >= 8) {
+    if (groups[groups.length - 1].length >= 8) {
       return true;
     }
   }
