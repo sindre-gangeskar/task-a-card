@@ -1,6 +1,7 @@
 /// <reference types="jquery" />
-var groups = [[], [], [], [], []];
 
+var groups = [[], [], [], [], []];
+let key = 0;
 class Card {
   constructor() {
     /* Card elements */
@@ -175,7 +176,6 @@ class Card {
     });
   }
 }
-
 function createCard() {
   let card = new Card();
   $(card.container).css("transform", "scale(0)");
@@ -242,58 +242,91 @@ function about() {
 }
 function deleteCard(target) {
   const cardContainer = $(target).closest("#card-container");
+  if (key === groups.length) {
+    groups[groups.length].pop();
+  }
+  groups[key].pop();
   cardContainer.css({ transition: "transform 300ms cubic-bezier(0.445, 0.05, 0.55, 0.95)", transform: "scale(0)", outline: "none" });
+  getAvailableSlotsInGroup(key, true);
 
   setTimeout(() => {
     cardContainer.remove();
   }, 500);
 }
-function checkGroups(groups) {
+function checkAllGroupsFull(groups) {
   for (let groupIndex = 0; groupIndex < groups.length; groupIndex++) {
     if (groups[4].length >= 8) {
-      $("#modal-alarm").modal("show");
       return true;
     }
   }
+
   return false;
 }
 function addCardToGroup(groupVisiblity) {
-  if (checkGroups(groups)) {
+  if (checkAllGroupsFull(groups)) {
+    const firstAvailableSlot = getFirstAvailableSlotInGroup();
+
+    if (firstAvailableSlot === undefined) {
+      $("#modal-alarm").modal("show");
+      return;
+    } else {
+      key = firstAvailableSlot;
+    }
+  }
+
+  if (getAvailableSlotsInGroup(key, false) && key <= groups.length) {
+    let card = createCard();
+    let groupID = $(card).find(".group-id");
+    if (groupVisiblity) groupID.show();
+    else groupID.hide();
+
+    $(card).addClass(`group-${key + 1}`);
+    groupID.html(key + 1);
+    groups[key].push(card);
+    $(`.group-${key + 1}-toggle`).click();
+    $(`.group-${key + 1}-toggle`).focus();
+    $(`.group-${key + 1}`).show();
     return;
   }
-  let card = createCard();
-  let groupID = $(card).find(".group-id");
-
-  if (groupVisiblity) groupID.show();
-  else groupID.hide();
-
-  for (let groupIndex = 0; groupIndex < groups.length; groupIndex++) {
-    if (groups[groupIndex].length < 8) {
-      $(card).addClass(`group-${groupIndex + 1}`);
-      groupID.html(groupIndex + 1);
-      groups[groupIndex].push(card);
-      $(`.group-${groupIndex + 1}-toggle`).click();
-      $(`.group-${groupIndex + 1}-toggle`).focus();
-      $(`.group-${groupIndex + 1}`).show();
-      return;
+  if (!getAvailableSlotsInGroup(key, false)) {
+    if (key > groups.length) key = groups.length;
+    key++;
+  }
+}
+function getAvailableSlotsInGroup(index, debug) {
+  if (index >= 0 && index <= groups.length) {
+    if (debug) {
+      console.log(`Available slots: ${8 - groups[index].length}`);
+    }
+    if (groups[index].length < 8) {
+      return true;
+    } else {
+      return false;
     }
   }
 }
-function getGroupVisibility() {
+function getFirstAvailableSlotInGroup() {
+  for (let groupIndex = 0; groupIndex < groups.length; groupIndex++) {
+    if (groups[groupIndex].length < 8) {
+      return groupIndex;
+    }
+  }
+}
+function getGroupIndexVisibility() {
   const groupToggle = $(".group-visibility-switch");
 
-  function updateGroupVisibility(checked) {
+  function updateGroupIndexVisibility(checked) {
     if (checked) $(".group-id").show();
     else $(".group-id").hide();
   }
 
   const initialVisibility = $(groupToggle).is(":checked");
-  updateGroupVisibility(initialVisibility);
+  updateGroupIndexVisibility(initialVisibility);
 
   /*Update on change */
   groupToggle.on("change", function () {
     const checked = $(this).is(":checked");
-    updateGroupVisibility(checked);
+    updateGroupIndexVisibility(checked);
   });
 
   return initialVisibility;
@@ -301,73 +334,108 @@ function getGroupVisibility() {
 function getTooltipsVisibility() {
   const toggle = $(".tooltips-visibility-switch");
 
+  function updateTooltipsVisibility(checked) {
+    if (checked) {
+      $('[data-bs-toggle="popover"]').popover("enable");
+    } else $('[data-bs-toggle="popover"]').popover("disable");
+  }
+
   toggle.on("change", function () {
     const checked = $(this).is(":checked");
     updateTooltipsVisibility(checked);
   });
 }
+function toggleGroups(key) {
+  switch (key) {
+    case 0:
+      $(".group-1").show();
+      $(".group-2").hide();
+      $(".group-3").hide();
+      $(".group-4").hide();
+      $(".group-5").hide();
+      break;
 
-function updateTooltipsVisibility(checked) {
-  if (checked) {
-    $('[data-bs-toggle="popover"]').popover("enable");
-  } else $('[data-bs-toggle="popover"]').popover("disable");
+    case 1: {
+      $(".group-2").show();
+      $(".group-1").hide();
+      $(".group-3").hide();
+      $(".group-4").hide();
+      $(".group-5").hide();
+      break;
+    }
+    case 2: {
+      $(".group-3").show();
+      $(".group-1").hide();
+      $(".group-2").hide();
+      $(".group-4").hide();
+      $(".group-5").hide();
+      break;
+    }
+    case 3: {
+      $(".group-4").show();
+      $(".group-1").hide();
+      $(".group-2").hide();
+      $(".group-3").hide();
+      $(".group-5").hide();
+      break;
+    }
+    case 4: {
+      $(".group-5").show();
+      $(".group-1").hide();
+      $(".group-2").hide();
+      $(".group-3").hide();
+      $(".group-4").hide();
+      break;
+    }
+    default:
+      break;
+  }
 }
 
 $(document).ready(function () {
   getTooltipsVisibility();
-  getGroupVisibility();
+  getGroupIndexVisibility();
   $(".wrapper").sortable({
     placeholder: "marker",
     items: ".sortable",
     tolerance: "pointer",
   });
   $("#add-card").on("click", function () {
-    addCardToGroup(getGroupVisibility());
+    addCardToGroup(getGroupIndexVisibility());
   });
   $(".group-1-toggle").click(function () {
-    $(".group-1").show();
-    $(".group-2").hide();
-    $(".group-3").hide();
-    $(".group-4").hide();
-    $(".group-5").hide();
+    key = 0;
+    toggleGroups(key);
+    getAvailableSlotsInGroup(key, true);
   });
   $(".group-2-toggle").click(function () {
-    $(".group-2").show();
-    $(".group-1").hide();
-    $(".group-3").hide();
-    $(".group-4").hide();
-    $(".group-5").hide();
+    key = 1;
+    toggleGroups(key);
+    getAvailableSlotsInGroup(key, true);
   });
   $(".group-3-toggle").click(function () {
-    $(".group-3").show();
-    $(".group-1").hide();
-    $(".group-2").hide();
-    $(".group-4").hide();
-    $(".group-5").hide();
+    key = 2;
+    toggleGroups(key);
+    getAvailableSlotsInGroup(key, true);
   });
   $(".group-4-toggle").click(function () {
-    $(".group-4").show();
-    $(".group-1").hide();
-    $(".group-2").hide();
-    $(".group-3").hide();
-    $(".group-5").hide();
+    key = 3;
+    toggleGroups(key);
+    getAvailableSlotsInGroup(key, true);
   });
   $(".group-5-toggle").click(function () {
-    $(".group-5").show();
-    $(".group-1").hide();
-    $(".group-2").hide();
-    $(".group-3").hide();
-    $(".group-4").hide();
+    key = 4;
+    toggleGroups(key);
+    getAvailableSlotsInGroup(key, true);
   });
 
   /* Delete Card */
   $(document).on("click", "#card-container .delete-btn", function () {
     let target = $(this).closest("#card-container");
-
     $("#delete-modal").modal("show");
 
     /* Delete on confirmation */
-    $("#modal-delete .confirm-delete-btn").on("click", function () {
+    $("#modal-delete .confirm-delete-btn").one("click", function () {
       deleteCard(target);
       $("#modal-delete").modal("hide");
     });
@@ -378,7 +446,7 @@ $(document).ready(function () {
       return;
     });
     /* Archive deletion */
-    $("#modal-delete .archive-delete-btn").on("click", function () {
+    $("#modal-delete .archive-delete-btn").one("click", function () {
       deleteCard(target);
       console.log("Not yet implemented, will get deleted instead");
       $("#modal-delete").modal("hide");
