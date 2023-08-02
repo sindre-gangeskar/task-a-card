@@ -16,7 +16,6 @@
 .tooltips-visibility-switch {
   background-color: #8d8d8d !important;
 }
-
 * {
   font-family: "Quicksand", sans-serif;
   margin: 0;
@@ -341,10 +340,9 @@ input {
 }
 @media (max-width: 992px) {
   .wrapper {
-    margin-top: 5rem !important;
+    margin-top: 5rem;
   }
 }
-
 @media (max-width: 768px) {
   .wrapper {
     margin-top: 20rem !important;

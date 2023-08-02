@@ -241,13 +241,13 @@ function about() {
   });
 }
 function deleteCard(target) {
+  groups[key].pop();
+  getAvailableSlotsInGroup(key, true);
   const cardContainer = $(target).closest("#card-container");
-  if (key === groups.length) {
+  cardContainer.css({ transition: "transform 300ms cubic-bezier(0.445, 0.05, 0.55, 0.95)", transform: "scale(0)", outline: "none" });
+  if (key >= groups.length) {
     groups[groups.length].pop();
   }
-  groups[key].pop();
-  cardContainer.css({ transition: "transform 300ms cubic-bezier(0.445, 0.05, 0.55, 0.95)", transform: "scale(0)", outline: "none" });
-  getAvailableSlotsInGroup(key, true);
 
   setTimeout(() => {
     cardContainer.remove();
@@ -259,7 +259,6 @@ function checkAllGroupsFull(groups) {
       return true;
     }
   }
-
   return false;
 }
 function addCardToGroup(groupVisiblity) {
@@ -272,10 +271,9 @@ function addCardToGroup(groupVisiblity) {
     } else {
       key = firstAvailableSlot;
     }
-  }
-  else key = getFirstAvailableSlotInGroup();
+  } else key = getFirstAvailableSlotInGroup();
 
-  if (getAvailableSlotsInGroup(key, false) && key <= groups.length) {
+  if (getAvailableSlotsInGroup(key, false) && key - 1 < groups.length) {
     let card = createCard();
     let groupID = $(card).find(".group-id");
     if (groupVisiblity) groupID.show();
@@ -295,15 +293,15 @@ function addCardToGroup(groupVisiblity) {
   }
 }
 function getAvailableSlotsInGroup(index, debug) {
-  if (index >= 0 && index <= groups.length) {
+  if (index >= 0 && index < groups.length) {
     if (debug) {
       console.log(`Available slots: ${8 - groups[index].length}`);
     }
-    if (groups[index].length < 8) {
-      return true;
-    } else {
-      return false;
-    }
+  }
+  if (groups[index].length < 8) {
+    return true;
+  } else {
+    return false;
   }
 }
 function getFirstAvailableSlotInGroup() {
@@ -414,6 +412,7 @@ $(document).ready(function () {
     toggleGroups(key);
     getAvailableSlotsInGroup(key, true);
   });
+
   $(".group-3-toggle").click(function () {
     key = 2;
     toggleGroups(key);
