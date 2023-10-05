@@ -140,7 +140,6 @@ body {
   fill: var(--theme-highlight-color);
 }
 #card-container {
-  cursor: grab;
   transform: scale(1);
   margin: 100px auto;
   width: 12rem;
@@ -346,5 +345,18 @@ input {
 @media (max-width: 768px) {
   .wrapper {
     margin-top: 20rem !important;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+
+  }
+}
+@media (max-width: 1280px){
+  #card-container{
+    scale:70%;
+  }
+  #card-container:hover{
+    scale:75%;
+  }
+  .wrapper {
+    grid-template-columns: repeat(auto-fit, minmax(50px, 1fr));
   }
 }

@@ -6,15 +6,7 @@ class Card {
   constructor() {
     /* Card elements */
 
-    const container = (this.container = $("<div id='card-container' class='sortable' data-bs-toggle='popover'></div>")).popover({
-      title: "Drag & Sort",
-      content: "Drag and Drop: Hold left mouse button to drag cards. Sort cards by swapping positions to arrange as desired.",
-      trigger: "hover",
-      container: this.container,
-      placement: "top",
-      offset: "0px, 50px",
-      delay: { show: 1500 },
-    });
+    const container = (this.container = $("<div id='card-container' data-bs-toggle='popover'></div>"));
     const head = (this.head = $("<div id='card-head'></div>"));
     const groupID = $((this.groupID = $("<div class='text-center group-id'></div>")));
     const titleContainer = (this.titlecontainer = $('<div id="card-title-container"></div>'));
@@ -394,11 +386,7 @@ function toggleGroups(key) {
 $(document).ready(function () {
   getTooltipsVisibility();
   getGroupIndexVisibility();
-  $(".wrapper").sortable({
-    placeholder: "marker",
-    items: ".sortable",
-    tolerance: "pointer",
-  });
+ 
   $("#add-card").on("click", function () {
     addCardToGroup(getGroupIndexVisibility());
     getAvailableSlotsInGroup(key, true);
